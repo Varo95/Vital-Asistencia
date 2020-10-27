@@ -23,8 +23,20 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <include
+        android:id="@+id/include"
         layout="@layout/content_main"
         android:backgroundTint="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp"
+        android:background="#757575"
+        android:text="Hay x elementos en la lista"
+        android:textAlignment="center"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="top" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

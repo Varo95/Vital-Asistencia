@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/background"></item>
+    <item
+        android:width="110dp"
+        android:height="111dp"
+        android:drawable="@color/background_splash"
+        android:gravity="center" />
+    <item
+        android:drawable="@drawable/ic_vital"
+        android:gravity="center" />
+</layer-list>
