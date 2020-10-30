@@ -27,17 +27,6 @@
         layout="@layout/content_main"
         android:backgroundTint="#FFFFFF" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
-        android:background="#757575"
-        android:text="Hay x elementos en la lista"
-        android:textAlignment="center"
-        app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="top" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -46,6 +35,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:contentDescription="@string/app_name"
         android:cropToPadding="true"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:backgroundTint="@color/background"
+        app:srcCompat="@android:drawable/ic_input_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
