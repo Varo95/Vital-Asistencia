@@ -3,13 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.vitalasistencia.views.MainActivity">
     <item
+        android:id="@+id/action_buscar"
+        android:icon="@android:drawable/ic_menu_search"
+        android:orderInCategory="100"
+        android:title="@string/action_search"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="Ajustes"
+        android:title="@string/settings"
         app:showAsAction="never" />
     <item
         android:id="@id/action_settings"
         android:orderInCategory="100"
-        android:title="Sobre la aplicacion"
+        android:title="@string/about_app"
         app:showAsAction="never" />
 </menu>

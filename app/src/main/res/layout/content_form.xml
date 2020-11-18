@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="70dp"
-                android:text="Restablecer Foto"
+                android:text="@string/reset_photo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="168dp"
                 android:layout_marginBottom="31dp"
-                android:text="Dia de la semana"
+                android:text="@string/weekday"
                 app:layout_constraintBottom_toTopOf="@+id/textView2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +67,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="fecha"
+                    android:hint="@string/date"
                     android:inputType="date" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
-                android:text="dd/mm/yy"
+                android:text="@string/date_format"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinner" />
@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="¿Preparar comida?"
+                android:text="@string/food"
                 android:textSize="14dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.483"
@@ -132,7 +132,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="telefono"
+                    android:hint="@string/phone"
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -161,7 +161,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="e-mail" />
+                    android:hint="@string/e_mail" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
@@ -190,7 +190,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="direccion" />
+                    android:hint="@string/address" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
@@ -218,7 +218,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="numero afiliado" />
+                    android:hint="@string/affiliate_number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
@@ -238,7 +238,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
-                android:text="Cancelar"
+                android:text="@string/cancel"
                 app:layout_constraintEnd_toStartOf="@+id/Guardar"
                 app:layout_constraintHorizontal_bias="0.509"
                 app:layout_constraintStart_toStartOf="parent"
@@ -249,7 +249,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
-                android:text="Guardar"
+                android:text="@string/save"
                 app:layout_constraintEnd_toEndOf="@+id/Cancelar"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toEndOf="parent"

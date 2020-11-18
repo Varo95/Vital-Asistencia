@@ -33,7 +33,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle("Nuevo Usuario");
+            getSupportActionBar().setTitle(R.string.New_User);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

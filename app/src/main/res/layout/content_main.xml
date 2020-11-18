@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#757575"
-        android:text="Tienes x usuarios"
+        android:text="@string/User_List"
         android:textAlignment="center"
         app:layout_anchor="@+id/include"
         app:layout_constraintEnd_toEndOf="parent"

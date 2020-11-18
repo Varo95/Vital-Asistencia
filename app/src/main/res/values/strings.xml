@@ -1,14 +1,27 @@
 <resources>
-    <string name="app_name">Vital Asistencia</string>
+    <string name="app_name" translatable="false">Vital Asistencia</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="title_activity_splash_screen">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="title_activity_form">FormActivity</string>
+    <string name="title_activity_splash_screen" translatable="false">FullscreenActivity</string>
+    <string name="dummy_button" translatable="false">Dummy Button</string>
+    <string name="dummy_content" translatable="false">DUMMY\nCONTENT</string>
+    <string name="title_activity_form" translatable="false">FormActivity</string>
+    <string name="food">Prepare food?</string>
+    <string name="date_format">dd/mm/yy</string>
+    <string name="date">fecha</string>
+    <string name="phone">telefono</string>
+    <string name="e_mail">E-mail</string>
+    <string name="address">direccion</string>
+    <string name="affiliate_number">Affiliate number</string>
+    <string name="cancel">Cancelar</string>
+    <string name="save">Save</string>
+    <string name="New_User">New User</string>
+    <string name="User_List">You got x users</string>
+    <string name="weekday">Weekday</string>
+    <string name="reset_photo">Reset_Photo</string>
+    <string name="about_app">About App</string>
+    <string name="settings">Settings</string>
+    <string name="action_search">Search</string>
 </resources>
