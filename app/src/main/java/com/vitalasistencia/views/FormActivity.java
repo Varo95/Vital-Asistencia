@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,6 +48,13 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         String[] letra = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes"};
         spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, letra));
+        Button SaveButton = findViewById(R.id.Save);
+        SaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onClickSaveButton();
+            }
+        });
 
     }
 
@@ -102,7 +110,8 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     }
 
     @Override
-    public void startFormActivity() {
-
+    public void SaveUser(){
+        Log.d(TAG,"Starting SaveButton");
+        finish();
     }
 }

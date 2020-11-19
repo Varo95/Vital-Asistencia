@@ -12,6 +12,8 @@ public class PForm implements IForm.Presenter {
         this.view = view;
     }
 
-    public PForm(FormActivity f) {
+    @Override
+    public void onClickSaveButton() {
+        view.SaveUser();
     }
 }

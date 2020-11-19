@@ -50,8 +50,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
                 Cuando tengas tiempo me lo vuelves a explicar(a ser posible en persona)
                 con un ejemplo práctico. Lo que me falla es llevarlo a la práctica.
                 */
-                Intent intent = new Intent(MainActivity.this, FormActivity.class);
-                startActivity(intent);
+                presenter.onClickFloatingButton();
             }
         });
 
@@ -75,6 +74,11 @@ public class MainActivity extends AppCompatActivity implements IList.View {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.action_search) {
+            Log.d(TAG, "Menu Search click");
+            presenter.onClickSearchButton();
             return true;
         }
 
@@ -119,6 +123,14 @@ public class MainActivity extends AppCompatActivity implements IList.View {
 
     @Override
     public void startFormActivity() {
+        Intent intent = new Intent(MainActivity.this, FormActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void startSearchActivity() {
+        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+        startActivity(intent);
 
     }
 }
