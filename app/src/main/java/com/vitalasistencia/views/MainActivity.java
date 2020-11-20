@@ -77,6 +77,10 @@ public class MainActivity extends AppCompatActivity implements IList.View {
             presenter.onClickSearchButton();
             return true;
         }
+        if(id==R.id.action_about){
+            Log.d(TAG,"Menu About click");
+            presenter.onClickAboutButton();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -126,6 +130,12 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     @Override
     public void startSearchActivity() {
         Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void startAboutActivity() {
+        Intent intent = new Intent(MainActivity.this, AboutActivity.class);
         startActivity(intent);
     }
 }

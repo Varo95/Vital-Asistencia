@@ -11,8 +11,11 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.vitalasistencia.R;
 import com.vitalasistencia.interfaces.IForm;
+import com.vitalasistencia.models.BUser;
 import com.vitalasistencia.presenters.PForm;
 
 public class FormActivity extends AppCompatActivity implements IForm.View {
@@ -20,6 +23,9 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     String TAG = "Vital_Asistencia/FormActivity";
     private IForm.Presenter presenter;
     private Context myContext;
+    private Object user;
+    TextInputLayout nameTIL;
+    TextInputEditText nameET;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +62,28 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
             }
         });
 
+        user = new BUser();
+
+/*        nameET = findViewById(R.id.nameTE);
+        nameTIL = findViewById(R.id.nameTIL);
+
+        nameET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    Log.d("FormActivity", "Exit EditText");
+                    if (user.setName(nameET.getText().toString()) == false ) {
+                        nameTIL.setError(presenter.getError("ContactName"));
+                    } else {
+                        nameTIL.setError("");
+                    }
+                }else{
+                    Log.d(TAG, "Input EditText");
+                }
+
+            }
+        });
+*/
     }
 
     @Override

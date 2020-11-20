@@ -30,5 +30,7 @@
     <string name="user_name">User Name</string>
     <string name="date_search">Date</string>
     <string name="search_button">Search</string>
+    <string name="title_activity_about">About App</string>
+    <string name="About">About App</string>
 
 </resources>

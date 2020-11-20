@@ -25,4 +25,6 @@
     <string name="user_name">Nombre de Usuario</string>
     <string name="date_search">Fecha</string>
     <string name="search_button">Buscar</string>
+    <string name="About">Sobre la App</string>
+    <string name="title_activity_about">Sobre la App</string>
 </resources>

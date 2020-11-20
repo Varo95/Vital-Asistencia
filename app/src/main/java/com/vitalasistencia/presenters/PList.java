@@ -30,4 +30,10 @@ public class PList implements IList.Presenter {
         Log.d(TAG,"Search Clicked");
         view.startSearchActivity();
     }
+
+    @Override
+    public void onClickAboutButton(){
+        Log.d(TAG,"About clicked");
+        view.startAboutActivity();
+    }
 }
