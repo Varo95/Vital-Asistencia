@@ -19,4 +19,10 @@
     <string name="about_app">Sobre la aplicacion</string>
     <string name="settings">Ajustes</string>
     <string name="action_search">Buscar</string>
+    <string name="title_activity_search">Buscar</string>
+    <string name="orderby">Ordenar</string>
+    <string name="help">Ayuda</string>
+    <string name="user_name">Nombre de Usuario</string>
+    <string name="date_search">Fecha</string>
+    <string name="search_button">Buscar</string>
 </resources>

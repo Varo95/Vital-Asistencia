@@ -45,10 +45,10 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         } else {
             Log.d(TAG, "Error loading toolbar");
         }
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_Form);
         String[] letra = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes"};
         spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, letra));
-        Button SaveButton = findViewById(R.id.Save);
+        Button SaveButton = findViewById(R.id.Save_Form);
         SaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

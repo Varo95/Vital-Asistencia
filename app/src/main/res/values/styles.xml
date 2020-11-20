@@ -11,7 +11,7 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/background</item>
-        <item name="colorAccent">@color/light_blue_900</item>
+        <item name="colorAccent">@color/backscreen</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">

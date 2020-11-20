@@ -46,10 +46,6 @@ public class MainActivity extends AppCompatActivity implements IList.View {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Button Clicked");
-                /*Rafa aquí no te he sabido implementar el modelo vista-presentador
-                Cuando tengas tiempo me lo vuelves a explicar(a ser posible en persona)
-                con un ejemplo práctico. Lo que me falla es llevarlo a la práctica.
-                */
                 presenter.onClickFloatingButton();
             }
         });
@@ -60,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        Log.d(TAG, "Cargando Opciones Menu");
+        Log.d(TAG, "Loading Menu Options");
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -131,6 +127,5 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     public void startSearchActivity() {
         Intent intent = new Intent(MainActivity.this, SearchActivity.class);
         startActivity(intent);
-
     }
 }

@@ -14,7 +14,17 @@
         android:title="@string/settings"
         app:showAsAction="never" />
     <item
-        android:id="@id/action_settings"
+        android:id="@+id/action_orderBy"
+        android:orderInCategory="100"
+        android:title="@string/orderby"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_help"
+        android:orderInCategory="100"
+        android:title="@string/help"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_about"
         android:orderInCategory="100"
         android:title="@string/about_app"
         app:showAsAction="never" />
