@@ -3,6 +3,7 @@ package com.vitalasistencia.views;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -92,15 +93,14 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         return true;
     }
 
-    /*    @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-            Log.d(TAG, "Cargando las opciones del menu");
-            // Inflate the menu; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(R.menu.menu_form, menu);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "Loading Menu Options");
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_form, menu);
+        return true;
+    }
 
-            return true;
-        }
-    */
     @Override
     protected void onStart() {
         Log.d(TAG, "Starting onStart");

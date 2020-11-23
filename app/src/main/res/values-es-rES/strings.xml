@@ -27,4 +27,6 @@
     <string name="search_button">Buscar</string>
     <string name="About">Sobre la App</string>
     <string name="title_activity_about">Sobre la App</string>
+    <string name="about_this_app">Sobre esta Aplicacion</string>
+    <string name="developer">Desarrollador :</string>
 </resources>

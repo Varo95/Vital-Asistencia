@@ -1,19 +1,25 @@
 package com.vitalasistencia.views;
 
+import android.content.Context;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.vitalasistencia.R;
+import com.vitalasistencia.interfaces.IAbout;
+import com.vitalasistencia.interfaces.ISearch;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements ISearch.View {
     String TAG = "Vital_Asistencia/SearchActivity";
+
+    private ISearch.Presenter presenter;
+    private Context myContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +42,14 @@ public class SearchActivity extends AppCompatActivity {
         } else {
             Log.d(TAG, "Error loading toolbar");
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        Log.d(TAG, "Loading Menu Options");
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        return true;
     }
 
     @Override

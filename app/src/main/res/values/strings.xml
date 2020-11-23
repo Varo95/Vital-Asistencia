@@ -32,5 +32,7 @@
     <string name="search_button">Search</string>
     <string name="title_activity_about">About App</string>
     <string name="About">About App</string>
+    <string name="about_this_app">About this App</string>
+    <string name="developer">Developer :</string>
 
 </resources>
