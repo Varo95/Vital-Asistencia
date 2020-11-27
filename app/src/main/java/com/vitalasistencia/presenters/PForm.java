@@ -26,7 +26,14 @@ public class PForm implements IForm.Presenter {
             case "ContactName":
                 error_msg= MyApp.getContext().getResources().getString(R.string.About);
                 break;
+            default:
+                error_msg="No me vale";
         }
         return error_msg;
+    }
+
+    @Override
+    public void onClickAddSpinner() {
+        view.onClickAddSpinner();
     }
 }

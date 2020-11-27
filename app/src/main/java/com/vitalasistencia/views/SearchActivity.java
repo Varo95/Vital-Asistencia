@@ -13,6 +13,10 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity implements ISearch.View {
     String TAG = "Vital_Asistencia/SearchActivity";
@@ -42,6 +46,10 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
         } else {
             Log.d(TAG, "Error loading toolbar");
         }
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_search);
+        ArrayList<String> letra = new ArrayList<String>();
+        letra.add("Opcion 1");
+        spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, letra));
     }
 
     @Override

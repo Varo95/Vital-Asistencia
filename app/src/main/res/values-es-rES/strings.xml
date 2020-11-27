@@ -12,7 +12,7 @@
     <string name="e_mail">E-mail</string>
     <string name="address">Dirección</string>
     <string name="affiliate_number">Numero de afiliado</string>
-    <string name="weekday">Dia de la semana</string>
+    <string name="weekday">Día de la semana</string>
     <string name="reset_photo">Restablecer Foto</string>
     <string name="date_format">dd/mm/aa</string>
     <string name="action_settings">Ajustes</string>
@@ -29,4 +29,5 @@
     <string name="title_activity_about">Sobre la App</string>
     <string name="about_this_app">Sobre esta Aplicacion</string>
     <string name="developer">Desarrollador :</string>
+    <string name="add">Añadir</string>
 </resources>

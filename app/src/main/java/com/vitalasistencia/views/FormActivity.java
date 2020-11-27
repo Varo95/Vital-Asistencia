@@ -1,12 +1,16 @@
 package com.vitalasistencia.views;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,15 +22,20 @@ import com.vitalasistencia.R;
 import com.vitalasistencia.interfaces.IForm;
 import com.vitalasistencia.models.BUser;
 import com.vitalasistencia.presenters.PForm;
+import java.util.Calendar;
+
+import java.util.ArrayList;
 
 public class FormActivity extends AppCompatActivity implements IForm.View {
 
     String TAG = "Vital_Asistencia/FormActivity";
     private IForm.Presenter presenter;
     private Context myContext;
-    private Object user;
     TextInputLayout nameTIL;
     TextInputEditText nameET;
+    private ArrayList<String> letra=null;
+    private Spinner s=null;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +44,8 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         setContentView(R.layout.activity_form);
         myContext = this;
         presenter = new PForm(this);
+
+        //Creamos el toolbar
         Log.d(TAG, "Starting Toolbar");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -52,28 +63,44 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         } else {
             Log.d(TAG, "Error loading toolbar");
         }
-        Spinner spinner = (Spinner) findViewById(R.id.spinner_Form);
-        String[] letra = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes"};
-        spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, letra));
-        Button SaveButton = findViewById(R.id.Save_Form);
-        SaveButton.setOnClickListener(new View.OnClickListener() {
+        //Declaramos el arrayList del Spinner
+        letra = new ArrayList<String>();
+        letra.add("Lunes");
+        letra.add("Martes");
+        letra.add("Miercoles");
+        letra.add("Jueves");
+        letra.add("Viernes");
+
+        //Creamos el adaptador
+        adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, letra);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+
+        //Creamos el spinner y le inyectamos los valores del adaptador
+        s = (Spinner) findViewById(R.id.spinner_Form);
+        s.setAdapter(adapter);
+
+        //Boton añadir del spinner
+        Button AddToSpinner = findViewById(R.id.add_spinner);
+        AddToSpinner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.onClickSaveButton();
+                Log.d(TAG,"Pressing ADD spinner button");
+                presenter.onClickAddSpinner();
             }
         });
 
-        user = new BUser();
+        //Creamos un nuevo usuario
+        BUser user = new BUser();
 
-/*        nameET = findViewById(R.id.nameTE);
-        nameTIL = findViewById(R.id.nameTIL);
+        nameET = findViewById(R.id.TEI_date);
+        nameTIL = findViewById(R.id.date_form);
 
         nameET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
                     Log.d("FormActivity", "Exit EditText");
-                    if (user.setName(nameET.getText().toString()) == false ) {
+                    if (user.setDate(nameET.getText().toString()) == false ) {
                         nameTIL.setError(presenter.getError("ContactName"));
                     } else {
                         nameTIL.setError("");
@@ -84,7 +111,17 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
 
             }
         });
-*/
+
+
+        //Botón de guardar
+        Button SaveButton = findViewById(R.id.Save_Form);
+        SaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onClickSaveButton();
+            }
+        });
+
     }
 
     @Override
@@ -141,5 +178,35 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     public void SaveUser(){
         Log.d(TAG,"Starting SaveButton");
         finish();
+    }
+
+    @Override
+    public void onClickAddSpinner() {
+        Log.d(TAG,"Adding to spinner");
+        LayoutInflater layoutActivity = LayoutInflater.from(myContext);
+        View viewAlertDialog = layoutActivity.inflate(R.layout.alert_dialog, null);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(myContext);
+        alertDialog.setView(viewAlertDialog);
+        final EditText dialogInput = (EditText) viewAlertDialog.findViewById(R.id.dialogInput);
+        alertDialog
+                .setCancelable(false)
+                // Botón Añadir
+                .setPositiveButton(getResources().getString(R.string.add),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogBox, int id) {
+                                adapter.add(dialogInput.getText().toString());
+                                s.setSelection(adapter.getPosition(dialogInput.getText().toString()));
+                            }
+                        })
+                // Botón Cancelar
+                .setNegativeButton(getResources().getString(R.string.cancel),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogBox, int id) {
+                                dialogBox.cancel();
+                            }
+                        })
+                .create()
+                .show();
+
     }
 }
