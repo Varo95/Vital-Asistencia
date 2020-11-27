@@ -5,6 +5,8 @@ import com.vitalasistencia.interfaces.IForm;
 import com.vitalasistencia.views.FormActivity;
 import com.vitalasistencia.views.MyApp;
 
+import static android.provider.Settings.System.getString;
+
 public class PForm implements IForm.Presenter {
 
     String TAG = "Vital_Asistencia/PForm";
@@ -19,15 +21,20 @@ public class PForm implements IForm.Presenter {
         view.SaveUser();
     }
 
-
     public String getError(String error_code){
         String error_msg="";
         switch(error_code){
-            case "ContactName":
-                error_msg= MyApp.getContext().getResources().getString(R.string.About);
+            case "Not valid date":
+                error_msg= MyApp.getContext().getResources().getString(R.string.date_not_valid);
+                break;
+            case "Not valid phone":
+                error_msg=MyApp.getContext().getResources().getString(R.string.phone_not_valid);
+                break;
+            case "Valid":
+                error_msg="";
                 break;
             default:
-                error_msg="No me vale";
+                error_msg="";
         }
         return error_msg;
     }

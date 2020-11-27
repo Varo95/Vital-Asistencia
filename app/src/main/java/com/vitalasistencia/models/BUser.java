@@ -2,6 +2,7 @@ package com.vitalasistencia.models;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class BUser {
     private String date;
@@ -38,20 +39,27 @@ public class BUser {
         return affiliate_number;
     }
 
-    public boolean setDate(String date1){
+    /**
+     * Set Date of the Object BUser
+     * @param format date format, like dd/MM/yyyy or some compatible format to date object
+     * @param value the value that user input
+     * @return
+     */
+    public boolean setDate(String format, String value){
         //v=verified
         boolean v_date=false;
-        if (date1 == null){
-            v_date=false;
-        } else if(!date1.matches("^([0-2][0-9]|3[0-1])(\\/)(0[1-9]|1[0-2])\\2(\\d{4})$")) {
-            v_date = true;
-        }
-        SimpleDateFormat format=new SimpleDateFormat("dd/MM/yyyy");
+        Date date=null;
         try {
-            format.parse(date1);
-            this.date=date1;
-            v_date=true;
-        }catch (ParseException e){
+            //Comprobamos la fecha parseándo el String a un date con SimpleDateFormat
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            date = sdf.parse(value);
+            if (value.equals(sdf.format(date))) {
+                //Si sale bien, insertamos la fecha ya parseada en el string del objeto
+                this.date = String.valueOf(date);
+                v_date=true;
+            }
+        } catch (ParseException ex) {
+            ex.printStackTrace();
             v_date=false;
         }
         return v_date;
@@ -59,7 +67,12 @@ public class BUser {
 
     public boolean setPhone(String phone){
         boolean v_phone=false;
-        this.phone=phone;
+        if(phone.matches("^[+]?[0-9]{10,13}$")){
+            v_phone=true;
+            this.phone=phone;
+        }else{
+            v_phone=false;
+        }
         return v_phone;
     }
 

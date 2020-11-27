@@ -22,7 +22,6 @@ import com.vitalasistencia.R;
 import com.vitalasistencia.interfaces.IForm;
 import com.vitalasistencia.models.BUser;
 import com.vitalasistencia.presenters.PForm;
-import java.util.Calendar;
 
 import java.util.ArrayList;
 
@@ -31,8 +30,8 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     String TAG = "Vital_Asistencia/FormActivity";
     private IForm.Presenter presenter;
     private Context myContext;
-    TextInputLayout nameTIL;
-    TextInputEditText nameET;
+    TextInputLayout phoneTIL;
+    TextInputEditText phoneET;
     private ArrayList<String> letra=null;
     private Spinner s=null;
     private ArrayAdapter<String> adapter;
@@ -92,26 +91,53 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         //Creamos un nuevo usuario
         BUser user = new BUser();
 
-        nameET = findViewById(R.id.TEI_date);
-        nameTIL = findViewById(R.id.date_form);
+        //Creamos punteros para el textedit de la fecha
+        phoneET = findViewById(R.id.TEI_date);
+        phoneTIL = findViewById(R.id.date_form);
 
-        nameET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        phoneET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
-                    Log.d("FormActivity", "Exit EditText");
-                    if (user.setDate(nameET.getText().toString()) == false ) {
-                        nameTIL.setError(presenter.getError("ContactName"));
-                    } else {
-                        nameTIL.setError("");
+                    Log.d(TAG, "date_text has focused");
+                    //Comprobamos que el formato de la fecha es el correcto
+                    if(phoneET.getText().toString().matches("")){
+                        //Si la cadena está vacía no mostrará ningún error
+                        phoneTIL.setError(presenter.getError("Valid"));
+                    }else if (!(user.setDate("dd/MM/yyyy",(phoneET.getText().toString())))) {
+                        //Si la cadena contiene una fecha invalida, mostrará este error(mirar BUser.setdate())
+                        phoneTIL.setError(presenter.getError("Not valid date"));
+                    }else {
+                        phoneTIL.setError(presenter.getError("Valid"));
                     }
                 }else{
-                    Log.d(TAG, "Input EditText");
+                    Log.d(TAG, "date_text is unfocused");
                 }
-
             }
         });
 
+        //Creamos punteros para el textedit del telefono
+        phoneET = findViewById(R.id.TEI_phone);
+        phoneTIL = findViewById(R.id.phone_form);
+        //Hacemos una operación equivalente a la anterior pero aplicandolo al número
+        phoneET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    Log.d(TAG, "phone_text has focused");
+                    if(phoneET.getText().toString().matches("")){
+                        phoneTIL.setError(presenter.getError("Valid"));
+                    }else if (!(user.setPhone(phoneET.getText().toString()))) {
+                        //No será valido si no coincide con la expresión regular de Buser.setPhone
+                        phoneTIL.setError(presenter.getError("Not valid phone"));
+                    }else {
+                        phoneTIL.setError(presenter.getError("Valid"));
+                    }
+                }else{
+                    Log.d(TAG, "phone_text is unfocused");
+                }
+            }
+        });
 
         //Botón de guardar
         Button SaveButton = findViewById(R.id.Save_Form);

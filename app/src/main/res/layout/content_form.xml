@@ -13,7 +13,7 @@
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
@@ -49,7 +49,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="168dp"
-                android:layout_marginBottom="31dp"
                 android:text="@string/weekday"
                 app:layout_constraintBottom_toTopOf="@+id/textView_date_form"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -60,10 +59,12 @@
                 android:id="@+id/date_form"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp"
+                app:layout_constraintBottom_toTopOf="@+id/switch_food_Form"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner_Form">
+                app:layout_constraintTop_toBottomOf="@+id/textView_date_form">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/TEI_date"
@@ -77,8 +78,9 @@
                 android:id="@+id/textView_date_form"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
+                android:layout_marginTop="5dp"
                 android:text="@string/date_format"
+                app:layout_constraintBottom_toTopOf="@+id/date_form"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinner_Form" />
@@ -87,11 +89,12 @@
                 android:id="@+id/switch_food_Form"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginBottom="30dp"
                 android:text="@string/food"
                 android:textSize="14dp"
+                app:layout_constraintBottom_toTopOf="@+id/phone_form"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.483"
+                app:layout_constraintHorizontal_bias="0.481"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/date_form" />
 
@@ -100,11 +103,12 @@
                 android:layout_width="50sp"
                 android:layout_height="50sp"
                 android:layout_marginStart="23dp"
-                android:layout_marginTop="140dp"
+                android:layout_marginTop="45dp"
                 android:layout_marginEnd="15dp"
                 app:layout_constraintEnd_toStartOf="@+id/date_form"
+                app:layout_constraintHorizontal_bias="0.488"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView_Form"
+                app:layout_constraintTop_toBottomOf="@+id/imageSpinner_Form"
                 app:srcCompat="@android:drawable/ic_menu_month" />
 
             <ImageView
@@ -124,12 +128,11 @@
                 android:id="@+id/phone_form"
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
                 android:layout_marginBottom="30dp"
                 app:layout_constraintBottom_toTopOf="@+id/email_form"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date_form">
+                app:layout_constraintTop_toBottomOf="@+id/switch_food_Form">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/TEI_phone"
@@ -144,11 +147,12 @@
                 android:layout_width="30sp"
                 android:layout_height="30sp"
                 android:layout_marginStart="23dp"
-                android:layout_marginTop="84dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="15dp"
                 app:layout_constraintEnd_toStartOf="@+id/phone_form"
+                app:layout_constraintHorizontal_bias="0.396"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageDate_Form"
+                app:layout_constraintTop_toBottomOf="@+id/imageView2"
                 app:srcCompat="@android:drawable/stat_sys_phone_call" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -284,6 +288,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/date_form"
                 app:layout_constraintTop_toBottomOf="@+id/add_spinner" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="23dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="40dp"
+                app:layout_constraintBottom_toTopOf="@+id/image_phone_Form"
+                app:layout_constraintEnd_toStartOf="@+id/switch_food_Form"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageDate_Form"
+                app:srcCompat="@drawable/food" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

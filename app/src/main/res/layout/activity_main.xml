@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F6F5F5"
-    android:backgroundTint="#FFFFFF"
+    android:backgroundTint="@color/backscreen"
     tools:context=".views.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -25,7 +25,7 @@
     <include
         android:id="@+id/include"
         layout="@layout/content_main"
-        android:backgroundTint="#FFFFFF"
+        android:backgroundTint="@color/backscreen"
         android:isScrollContainer="true" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

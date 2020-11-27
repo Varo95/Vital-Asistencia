@@ -30,4 +30,6 @@
     <string name="about_this_app">Sobre esta Aplicacion</string>
     <string name="developer">Desarrollador :</string>
     <string name="add">Añadir</string>
+    <string name="date_not_valid">Formato o fecha no valida</string>
+    <string name="phone_not_valid">Error sintactico en el teléfono</string>
 </resources>
