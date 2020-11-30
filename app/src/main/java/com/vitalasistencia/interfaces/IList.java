@@ -10,7 +10,6 @@ public interface IList {
     public interface Presenter {
         void onClickFloatingButton();
         void onClickSearchButton();
-
         void onClickAboutButton();
     }
 }

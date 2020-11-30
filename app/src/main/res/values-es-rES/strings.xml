@@ -32,4 +32,7 @@
     <string name="add">Añadir</string>
     <string name="date_not_valid">Formato o fecha no valida</string>
     <string name="phone_not_valid">Error sintactico en el teléfono</string>
+    <string name="email_not_valid">Email no válido</string>
+    <string name="address_not_valid">Dirección no válida</string>
+    <string name="affiliate_not_valid">Numero de Afiliado no válido</string>
 </resources>

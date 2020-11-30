@@ -1,11 +1,12 @@
 package com.vitalasistencia.views;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 
 import com.vitalasistencia.R;
-import com.vitalasistencia.interfaces.IAbout;
 import com.vitalasistencia.interfaces.ISearch;
+import com.vitalasistencia.presenters.PSearch;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,15 +15,22 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class SearchActivity extends AppCompatActivity implements ISearch.View {
     String TAG = "Vital_Asistencia/SearchActivity";
 
     private ISearch.Presenter presenter;
     private Context myContext;
+    private Button buttonDate;
+    Calendar calendar ;
+    private DatePickerDialog datePickerDialog ;
+    int Year, Month, Day ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +54,45 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
         } else {
             Log.d(TAG, "Error loading toolbar");
         }
+        myContext = this;
+        presenter = new PSearch(this);
+
+        calendar = Calendar.getInstance();
+        Year = calendar.get(Calendar.YEAR) ;
+        Month = calendar.get(Calendar.MONTH);
+        Day = calendar.get(Calendar.DAY_OF_MONTH);
+
         Spinner spinner = (Spinner) findViewById(R.id.spinner_search);
         ArrayList<String> letra = new ArrayList<String>();
         letra.add("Opcion 1");
-        spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, letra));
+        spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, letra));
+
+        buttonDate=(Button)findViewById(R.id.datePicker_Search);
+        buttonDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePickerDialog = new DatePickerDialog(myContext, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        // Al no haber campo de texto, cierro el datepicker. Añadiré funcionalidad después
+                        // Cuando se pulse el botón de okey
+                        Log.d(TAG,"Clicked OK on Calendar");
+                        datePickerDialog.cancel();
+                    }
+                },Year, Month, Day);
+                datePickerDialog.show();
+            }
+        });
+
+        Button Searchbutton= findViewById(R.id.button_search);
+        Searchbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Calling presenter.ClickSearchButton");
+                presenter.onClickSearchButton();
+            }
+        });
+
     }
 
     @Override
@@ -100,5 +143,11 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
     protected void onDestroy() {
         Log.d(TAG, "Starting onDestroy");
         super.onDestroy();
+    }
+
+    @Override
+    public void SearchButton() {
+        Log.d(TAG,"SearchButton Clicked");
+        finish();
     }
 }

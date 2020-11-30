@@ -2,8 +2,6 @@ package com.vitalasistencia.views;
 
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.vitalasistencia.R;
 import com.vitalasistencia.interfaces.IAbout;
 

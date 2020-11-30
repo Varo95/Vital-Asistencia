@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Button Clicked");
+                Log.d(TAG, "Button Add Clicked");
                 presenter.onClickFloatingButton();
             }
         });
@@ -77,8 +77,8 @@ public class MainActivity extends AppCompatActivity implements IList.View {
             presenter.onClickSearchButton();
             return true;
         }
-        if(id==R.id.action_about){
-            Log.d(TAG,"Menu About click");
+        if (id == R.id.action_about) {
+            Log.d(TAG, "Menu About click");
             presenter.onClickAboutButton();
         }
 
@@ -123,18 +123,21 @@ public class MainActivity extends AppCompatActivity implements IList.View {
 
     @Override
     public void startFormActivity() {
+        Log.d(TAG,"Starting Form Activity");
         Intent intent = new Intent(MainActivity.this, FormActivity.class);
         startActivity(intent);
     }
 
     @Override
     public void startSearchActivity() {
+        Log.d(TAG,"Starting Search Activity");
         Intent intent = new Intent(MainActivity.this, SearchActivity.class);
         startActivity(intent);
     }
 
     @Override
     public void startAboutActivity() {
+        Log.d(TAG,"Starting About Activity");
         Intent intent = new Intent(MainActivity.this, AboutActivity.class);
         startActivity(intent);
     }

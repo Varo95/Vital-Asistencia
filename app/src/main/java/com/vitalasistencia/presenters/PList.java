@@ -1,12 +1,8 @@
 package com.vitalasistencia.presenters;
 
-
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import com.vitalasistencia.interfaces.IList;
-import com.vitalasistencia.views.FormActivity;
 import com.vitalasistencia.views.MainActivity;
 
 public class PList implements IList.Presenter {

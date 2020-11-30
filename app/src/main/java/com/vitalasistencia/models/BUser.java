@@ -4,6 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+
 public class BUser {
     private String date;
     private String phone;
@@ -40,9 +43,9 @@ public class BUser {
     }
 
     /**
-     * Set Date of the Object BUser
+     * Set the User date
      * @param format date format, like dd/MM/yyyy or some compatible format to date object
-     * @param value the value that user input
+     * @param value the value of the TextInput
      * @return
      */
     public boolean setDate(String format, String value){
@@ -55,8 +58,8 @@ public class BUser {
             date = sdf.parse(value);
             if (value.equals(sdf.format(date))) {
                 //Si sale bien, insertamos la fecha ya parseada en el string del objeto
-                this.date = String.valueOf(date);
                 v_date=true;
+                this.date = String.valueOf(date);
             }
         } catch (ParseException ex) {
             ex.printStackTrace();
@@ -65,6 +68,11 @@ public class BUser {
         return v_date;
     }
 
+    /**
+     * Set the User Phone
+     * @param phone
+     * @return
+     */
     public boolean setPhone(String phone){
         boolean v_phone=false;
         if(phone.matches("^[+]?[0-9]{10,13}$")){
@@ -76,34 +84,52 @@ public class BUser {
         return v_phone;
     }
 
+    /**
+     * Set the User Email
+     * @param email
+     * @return
+     */
     public boolean setEmail(String email){
+        //Utilizando el API de javaemail
         boolean v_email=false;
-
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+            v_email=true;
+            this.email=email;
+        } catch (AddressException ex) {
+            v_email = false;
+        }
         return v_email;
     }
 
+    /**
+     * Set the user Address
+     * @param address
+     * @return
+     */
     public boolean setAddress(String address){
         boolean v_address=false;
-
+        if(address.startsWith("C") || address.startsWith("A")){
+            v_address=true;
+            this.address=address;
+        }
         return v_address;
     }
 
+    /**
+     * Set the User Affiliate Number
+     * @param affiliate_number
+     * @return
+     */
     public boolean setAffiliate_number(String affiliate_number){
         boolean v_affiliate_number=false;
-
+        if(affiliate_number.matches("^[0-9]{3}+[A-Z]{5}$")){
+            v_affiliate_number = true;
+            this.affiliate_number = affiliate_number;
+        }else{
+            v_affiliate_number=false;
+        }
         return v_affiliate_number;
     }
-
-/*    public String getName() {
-        return name;
-    }
-
-    public boolean setName(String name) {
-        if (name.startsWith("a")) {
-            this.name = name;
-            return true;
-        } else {
-            return false;
-        }
-    }*/
 }

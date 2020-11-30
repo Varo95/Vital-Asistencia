@@ -37,5 +37,8 @@
     <string name="add">Add</string>
     <string name="date_not_valid">Invalid date or format</string>
     <string name="phone_not_valid">Wrong sintax of phone</string>
+    <string name="email_not_valid">Not valid email</string>
+    <string name="address_not_valid">Address not valid</string>
+    <string name="affiliate_not_valid">Not valid Affiliate Number</string>
 
 </resources>

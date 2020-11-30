@@ -1,11 +1,11 @@
 package com.vitalasistencia.presenters;
 
+import android.util.Log;
+
 import com.vitalasistencia.R;
 import com.vitalasistencia.interfaces.IForm;
 import com.vitalasistencia.views.FormActivity;
 import com.vitalasistencia.views.MyApp;
-
-import static android.provider.Settings.System.getString;
 
 public class PForm implements IForm.Presenter {
 
@@ -18,6 +18,7 @@ public class PForm implements IForm.Presenter {
 
     @Override
     public void onClickSaveButton() {
+        Log.d(TAG,"Save Button Clicked");
         view.SaveUser();
     }
 
@@ -30,6 +31,15 @@ public class PForm implements IForm.Presenter {
             case "Not valid phone":
                 error_msg=MyApp.getContext().getResources().getString(R.string.phone_not_valid);
                 break;
+            case "Not valid email":
+                error_msg=MyApp.getContext().getResources().getString(R.string.email_not_valid);
+                break;
+            case "Not valid address":
+                error_msg=MyApp.getContext().getResources().getString(R.string.address_not_valid);
+                break;
+            case "Not valid affiliate":
+                error_msg=MyApp.getContext().getResources().getString(R.string.affiliate_not_valid);
+                break;
             case "Valid":
                 error_msg="";
                 break;
@@ -41,6 +51,7 @@ public class PForm implements IForm.Presenter {
 
     @Override
     public void onClickAddSpinner() {
+        Log.d(TAG,"AddToSpinner Clicked");
         view.onClickAddSpinner();
     }
 }
