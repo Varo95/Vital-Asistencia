@@ -107,7 +107,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         BUser user = new BUser();
 
         //Creamos punteros para el textedit de la fecha
-        dateEditText = findViewById(R.id.TEI_date);
+        dateEditText = findViewById(R.id.TEI_date_search);
         dateLayout = findViewById(R.id.date_form);
 
         dateEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -343,6 +343,5 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                         })
                 .create()
                 .show();
-
     }
 }

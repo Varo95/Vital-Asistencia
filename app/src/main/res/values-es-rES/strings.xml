@@ -14,7 +14,7 @@
     <string name="affiliate_number">Numero de afiliado</string>
     <string name="weekday">Día de la semana</string>
     <string name="reset_photo">Restablecer Foto</string>
-    <string name="date_format">dd/mm/aa</string>
+    <string name="date_format">dd/mm/aaaa</string>
     <string name="action_settings">Ajustes</string>
     <string name="about_app">Sobre la aplicacion</string>
     <string name="settings">Ajustes</string>

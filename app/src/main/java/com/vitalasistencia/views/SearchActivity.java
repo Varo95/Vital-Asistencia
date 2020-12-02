@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.vitalasistencia.R;
 import com.vitalasistencia.interfaces.ISearch;
 import com.vitalasistencia.presenters.PSearch;
@@ -29,6 +31,8 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
     private Context myContext;
     private Button buttonDate;
     Calendar calendar ;
+    TextInputLayout dateLayout;
+    TextInputEditText dateEditText;
     private DatePickerDialog datePickerDialog ;
     int Year, Month, Day ;
 
@@ -67,6 +71,12 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
         letra.add("Opcion 1");
         spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, letra));
 
+        //Creamos punteros para el textedit de la fecha
+        dateEditText = findViewById(R.id.TEI_date_search);
+        dateLayout = findViewById(R.id.search_date_text);
+        //Para que el usuario no pueda cambiar la fecha
+        dateEditText.setEnabled(false);
+
         buttonDate=(Button)findViewById(R.id.datePicker_Search);
         buttonDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,10 +84,8 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
                 datePickerDialog = new DatePickerDialog(myContext, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        // Al no haber campo de texto, cierro el datepicker. Añadiré funcionalidad después
-                        // Cuando se pulse el botón de okey
                         Log.d(TAG,"Clicked OK on Calendar");
-                        datePickerDialog.cancel();
+                        dateEditText.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
                     }
                 },Year, Month, Day);
                 datePickerDialog.show();
