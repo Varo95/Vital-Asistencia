@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/photo"
+        android:id="@+id/photo_reciclerview"
         android:layout_width="100dp"
         android:layout_height="100dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -18,9 +18,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
-        app:layout_constraintBottom_toBottomOf="@id/photo"
-        app:layout_constraintLeft_toRightOf="@id/photo"
-        app:layout_constraintTop_toTopOf="@id/photo"
+        app:layout_constraintBottom_toBottomOf="@id/photo_reciclerview"
+        app:layout_constraintLeft_toRightOf="@id/photo_reciclerview"
+        app:layout_constraintTop_toTopOf="@id/photo_reciclerview"
         tools:text="@tools:sample/first_names" />
 
     <TextView
@@ -29,8 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="13dp"
-        tools:text="@tools:sample/last_names"
-        app:layout_constraintStart_toEndOf="@+id/photo"
-        app:layout_constraintTop_toBottomOf="@+id/firstName" />
+        app:layout_constraintStart_toEndOf="@+id/photo_reciclerview"
+        app:layout_constraintTop_toBottomOf="@+id/firstName"
+        tools:text="@tools:sample/last_names" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

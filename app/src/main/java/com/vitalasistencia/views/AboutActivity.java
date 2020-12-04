@@ -13,7 +13,7 @@ import android.view.View;
 
 public class AboutActivity extends AppCompatActivity implements IAbout.View {
 
-    String TAG = "Vital_Asistencia/AboutActivity";
+    private String TAG = "Vital_Asistencia/AboutActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

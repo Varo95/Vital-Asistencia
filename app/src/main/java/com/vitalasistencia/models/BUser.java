@@ -13,6 +13,7 @@ public class BUser {
     private String email;
     private String address;
     private String affiliate_number;
+    private String image;
 
     public BUser() {
         this.date="";
@@ -20,7 +21,9 @@ public class BUser {
         this.email="";
         this.address="";
         this.affiliate_number="";
+        this.image="";
     }
+
 
     public String getDate() {
         return date;
@@ -40,6 +43,14 @@ public class BUser {
 
     public String getAffiliate_number() {
         return affiliate_number;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     /**

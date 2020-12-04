@@ -32,4 +32,10 @@ public class PList implements IList.Presenter {
         Log.d(TAG,"About clicked");
         view.startAboutActivity();
     }
+
+    @Override
+    public void onClickReciclerViewItem(String affiliate_number) {
+        Log.d(TAG,"Item"+affiliate_number+"selected");
+        view.startFormActivity(affiliate_number);
+    }
 }

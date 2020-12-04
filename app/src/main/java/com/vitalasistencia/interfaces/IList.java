@@ -5,11 +5,13 @@ public interface IList {
         void startFormActivity();
         void startSearchActivity();
         void startAboutActivity();
+        void startFormActivity(String id);
     }
 
     public interface Presenter {
         void onClickFloatingButton();
         void onClickSearchButton();
         void onClickAboutButton();
+        void onClickReciclerViewItem(String id);
     }
 }

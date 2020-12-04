@@ -30,26 +30,27 @@ import java.util.Calendar;
 
 public class FormActivity extends AppCompatActivity implements IForm.View {
 
-    String TAG = "Vital_Asistencia/FormActivity";
+    private String TAG = "Vital_Asistencia/FormActivity";
     private IForm.Presenter presenter;
     private Context myContext;
-    TextInputLayout dateLayout;
-    TextInputEditText dateEditText;
-    TextInputLayout phoneLayout;
-    TextInputEditText phoneEditText;
-    TextInputLayout emailLayout;
-    TextInputEditText emailEditText;
-    TextInputLayout addressLayout;
-    TextInputEditText addressEditText;
-    TextInputLayout affiliateLayout;
-    TextInputEditText affiliateEditText;
+    private TextInputLayout dateLayout;
+    private TextInputEditText dateEditText;
+    private TextInputLayout phoneLayout;
+    private TextInputEditText phoneEditText;
+    private TextInputLayout emailLayout;
+    private TextInputEditText emailEditText;
+    private TextInputLayout addressLayout;
+    private TextInputEditText addressEditText;
+    private TextInputLayout affiliateLayout;
+    private TextInputEditText affiliateEditText;
     private ArrayList<String> letra = null;
     private Spinner s = null;
     private ArrayAdapter<String> adapter;
     private Button buttonDate;
-    Calendar calendar ;
-    private DatePickerDialog datePickerDialog ;
-    int Year, Month, Day ;
+    private Calendar calendar;
+    private DatePickerDialog datePickerDialog;
+    private int Year, Month, Day;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,12 +134,12 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
 
         //Inicializamos el calendario
         calendar = Calendar.getInstance();
-        Year = calendar.get(Calendar.YEAR) ;
+        Year = calendar.get(Calendar.YEAR);
         Month = calendar.get(Calendar.MONTH);
         Day = calendar.get(Calendar.DAY_OF_MONTH);
 
         //Creamos el DatePicker de fecha
-        buttonDate=(Button)findViewById(R.id.date_picker);
+        buttonDate = (Button) findViewById(R.id.date_picker);
         buttonDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,9 +149,13 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         //No sé por qué exactamente, pero en el mes me introduce el mes actual -1, por eso he añadido un +1
-                        dateEditText.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+                        String day = "" + dayOfMonth;
+                        if (dayOfMonth < 10) {
+                            day = "0" + dayOfMonth;
+                        }
+                        dateEditText.setText(day + "/" + (month + 1) + "/" + year);
                     }
-                },Year, Month, Day);
+                }, Year, Month, Day);
                 datePickerDialog.show();
             }
         });
@@ -253,6 +258,15 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
             }
         });
 
+        id=getIntent().getStringExtra("id");
+        Log.d(TAG, "Get String");
+
+        if(id!=null){
+            //set text noseque id
+            affiliateEditText.setText(id);
+        }else{
+            //deshabilitar el boton eliminar
+        }
     }
 
     @Override
@@ -313,7 +327,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
 
     @Override
     public void onClickAddSpinner() {
-        String p="";
+        String p = "";
         Log.d(TAG, "Adding to spinner");
         LayoutInflater layoutActivity = LayoutInflater.from(myContext);
         View viewAlertDialog = layoutActivity.inflate(R.layout.alert_dialog, null);
@@ -325,10 +339,10 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                 .setPositiveButton(getResources().getString(R.string.add),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogBox, int id) {
-                                if((dialogInput.getText().toString().equals(p.toString()))){
+                                if ((dialogInput.getText().toString().equals(p.toString()))) {
                                     dialogBox.cancel();
                                     s.setSelection(adapter.getPosition(dialogInput.getText().toString()));
-                                }else{
+                                } else {
                                     adapter.add(dialogInput.getText().toString());
                                     s.setSelection(adapter.getPosition(dialogInput.getText().toString()));
                                 }
@@ -344,4 +358,5 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                 .create()
                 .show();
     }
+
 }

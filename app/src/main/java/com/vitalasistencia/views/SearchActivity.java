@@ -25,16 +25,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class SearchActivity extends AppCompatActivity implements ISearch.View {
-    String TAG = "Vital_Asistencia/SearchActivity";
+    private String TAG = "Vital_Asistencia/SearchActivity";
 
     private ISearch.Presenter presenter;
     private Context myContext;
     private Button buttonDate;
-    Calendar calendar ;
-    TextInputLayout dateLayout;
-    TextInputEditText dateEditText;
+    private Calendar calendar ;
+    private TextInputLayout dateLayout;
+    private TextInputEditText dateEditText;
     private DatePickerDialog datePickerDialog ;
-    int Year, Month, Day ;
+    private int Year, Month, Day ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
