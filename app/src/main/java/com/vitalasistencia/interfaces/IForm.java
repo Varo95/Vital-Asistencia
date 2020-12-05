@@ -5,11 +5,12 @@ public interface IForm {
         void onClickSaveButton();
         String getError(String error_code);
         void onClickAddSpinner();
+        void onClickCancelButton();
     }
 
     public interface View {
         void SaveUser();
         void onClickAddSpinner();
+        void DeleteUser();
     }
-
 }

@@ -54,4 +54,9 @@ public class PForm implements IForm.Presenter {
         Log.d(TAG,"AddToSpinner Clicked");
         view.onClickAddSpinner();
     }
+
+    @Override
+    public void onClickCancelButton() {
+        view.DeleteUser();
+    }
 }

@@ -51,6 +51,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     private DatePickerDialog datePickerDialog;
     private int Year, Month, Day;
     private String id;
+    private boolean creatinguser = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -258,14 +259,29 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
             }
         });
 
-        id=getIntent().getStringExtra("id");
+        id = getIntent().getStringExtra("id");
         Log.d(TAG, "Get String");
 
-        if(id!=null){
+        if (id != null) {
             //set text noseque id
             affiliateEditText.setText(id);
-        }else{
-            //deshabilitar el boton eliminar
+        } else {
+            //Cambia el booleano para usarlo en otras funciones
+            creatinguser = true;
+        }
+        //Botón eliminar o cancelar
+        Button CancelButton = findViewById(R.id.Cancel_Form);
+        if (creatinguser) {
+            //Si se está creando un usuario se deshabilita el botón de Eliminar/Cancelar
+            CancelButton.setEnabled(false);
+        } else {
+            CancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "Calling presenter.ClickSaveButton");
+                    presenter.onClickCancelButton();
+                }
+            });
         }
     }
 
@@ -278,8 +294,13 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(TAG, "Loading Menu Options");
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_form, menu);
+        //Si se está creando un usuario se quita la opción de borrar del menu contextual
+        if(creatinguser){
+            menu.getItem(0).setEnabled(false);
+        }
         return true;
     }
 
@@ -357,6 +378,13 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                         })
                 .create()
                 .show();
+    }
+
+    @Override
+    public void DeleteUser() {
+        //Borrar el usuario todavía sin implementar
+        Log.d(TAG, "Starting DeleteButton");
+        finish();
     }
 
 }

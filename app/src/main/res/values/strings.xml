@@ -40,5 +40,6 @@
     <string name="email_not_valid">Not valid email</string>
     <string name="address_not_valid">Address not valid</string>
     <string name="affiliate_not_valid">Not valid Affiliate Number</string>
+    <string name="delete">Delete</string>
 
 </resources>
