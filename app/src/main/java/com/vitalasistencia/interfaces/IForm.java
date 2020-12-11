@@ -7,11 +7,13 @@ public interface IForm {
         void onClickAddSpinner();
         void onClickCancelButton();
         void onClickImage();
+        void checkReadInternalStorage(int WriteExternalStoragePermission);
     }
 
     public interface View {
         void SaveUser();
         void onClickAddSpinner();
         void DeleteUser();
+        void getReadPermission(int n);
     }
 }

@@ -40,4 +40,6 @@
         Debe de tener 3 numeros seguidos de 4 letras mayusculas\n
         Ejemplos: 111AAAA 123ABCD</string>
     <string name="delete">Eliminar</string>
+    <string name="P_write_denied">Permiso de Escritura Denegado</string>
+    <string name="P_write_accepted">Permiso de Escritura Concedido</string>
 </resources>

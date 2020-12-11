@@ -45,5 +45,7 @@
         Must be 3 numbers followed by 4 Caps characters\n
         Examples: 111AAAA 123ABCD</string>
     <string name="delete">Delete</string>
+    <string name="P_write_denied">Write Permission Denied</string>
+    <string name="P_write_accepted">Write Permission Granted</string>
 
 </resources>

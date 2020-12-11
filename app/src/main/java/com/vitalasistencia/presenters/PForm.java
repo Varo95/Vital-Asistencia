@@ -1,10 +1,11 @@
 package com.vitalasistencia.presenters;
 
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 
 import com.vitalasistencia.R;
 import com.vitalasistencia.interfaces.IForm;
-import com.vitalasistencia.views.FormActivity;
 import com.vitalasistencia.views.MyApp;
 
 public class PForm implements IForm.Presenter {
@@ -63,5 +64,24 @@ public class PForm implements IForm.Presenter {
     @Override
     public void onClickImage() {
 
+    }
+
+    @Override
+    public void checkReadInternalStorage(int WriteExternalStoragePermission) {
+        if (WriteExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+            // Permiso denegado
+            // A partir de Marshmallow (6.0) se pide aceptar o rechazar el permiso en tiempo de ejecución
+            // En las versiones anteriores no es posible hacerlo
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                view.getReadPermission(0);
+                // Una vez que se pide aceptar o rechazar el permiso se ejecuta el método "onRequestPermissionsResult" para manejar la respuesta
+                // Si el usuario marca "No preguntar más" no se volverá a mostrar este diálogo
+            } else {
+                view.getReadPermission(1);
+            }
+        } else {
+            // Permiso aceptado
+            view.getReadPermission(2);
+        }
     }
 }

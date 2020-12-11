@@ -6,7 +6,6 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,7 +61,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     private String id;
     private ImageView imageView_Form;
     private boolean creatinguser = false;
-    final private int CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 123;
+    final private int CODE_WRITE_EXTERNAL_STORAGE_PERMISSION= 123;
     final private int CODE_CAMERA = 123;
     private ConstraintLayout constraintLayoutFormActivity;
 
@@ -129,25 +128,9 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
             public void onClick(View view) {
                 Log.d(TAG, "Calling presenter.onClickImage");
                 int WriteExternalStoragePermission = ContextCompat.checkSelfPermission(myContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                Log.d("MainActivity", "WRITE_EXTERNAL_STORAGE Permission: " + WriteExternalStoragePermission);
+                Log.d(TAG, "WRITE_EXTERNAL_STORAGE Permission: " + WriteExternalStoragePermission);
+                presenter.checkReadInternalStorage(WriteExternalStoragePermission);
 
-                if (WriteExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-                    // Permiso denegado
-                    // A partir de Marshmallow (6.0) se pide aceptar o rechazar el permiso en tiempo de ejecución
-                    // En las versiones anteriores no es posible hacerlo
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                        ActivityCompat.requestPermissions(FormActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, CODE_WRITE_EXTERNAL_STORAGE_PERMISSION);
-                        // Una vez que se pide aceptar o rechazar el permiso se ejecuta el método "onRequestPermissionsResult" para manejar la respuesta
-                        // Si el usuario marca "No preguntar más" no se volverá a mostrar este diálogo
-                    } else {
-                        Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.About), Snackbar.LENGTH_LONG)
-                                .show();
-                    }
-                } else {
-                    // Permiso aceptado
-                    Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.app_name), Snackbar.LENGTH_LONG)
-                            .show();
-                }
                 //TODO implementar añadir imagen modelo vista-presentador
                 //presenter.onClickImage();
             }
@@ -438,16 +421,38 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
             case CODE_WRITE_EXTERNAL_STORAGE_PERMISSION:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permiso aceptado
-                    Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.app_name), Snackbar.LENGTH_LONG)
+                    Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.P_write_accepted), Snackbar.LENGTH_LONG)
                             .show();
                 } else {
                     // Permiso rechazado
-                    Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.About), Snackbar.LENGTH_LONG)
+                    Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.P_write_denied), Snackbar.LENGTH_LONG)
                             .show();
                 }
                 break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    /**
+     * This method is called by Pform(Presentor) and show to user if write permission was or not granted.
+     * @param n code of number
+     */
+    public void getReadPermission(int n){
+        switch (n) {
+            case 0:
+                //Si la versión de android es superior a la 6, se ejecutará esta línea para pedir permisos en tiempo real
+                ActivityCompat.requestPermissions(FormActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CODE_WRITE_EXTERNAL_STORAGE_PERMISSION);
+                break;
+            case 1:
+                // Permiso denegado
+                Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.P_write_denied), Snackbar.LENGTH_LONG).show();
+                break;
+            case 2:
+                // Permiso aceptado
+                Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.P_write_accepted), Snackbar.LENGTH_LONG).show();
+                break;
+            default:
         }
     }
 }
