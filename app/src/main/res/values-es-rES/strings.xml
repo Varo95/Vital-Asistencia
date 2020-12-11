@@ -31,9 +31,13 @@
     <string name="developer">Desarrollador :</string>
     <string name="add">Añadir</string>
     <string name="date_not_valid">Formato o fecha no valida</string>
-    <string name="phone_not_valid">Error sintactico en el teléfono</string>
+    <string name="phone_not_valid">Wrong sintax of phone\n
+        Por favor inserta un numero entre 10 y 13(0 incluidos ó +)\n
+        Ejemplos: +3412345678 003412345678</string>
     <string name="email_not_valid">Email no válido</string>
     <string name="address_not_valid">Dirección no válida</string>
-    <string name="affiliate_not_valid">Numero de Afiliado no válido</string>
+    <string name="affiliate_not_valid">Numero de afiliado no valido\n
+        Debe de tener 3 numeros seguidos de 4 letras mayusculas\n
+        Ejemplos: 111AAAA 123ABCD</string>
     <string name="delete">Eliminar</string>
 </resources>

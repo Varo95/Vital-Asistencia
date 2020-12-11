@@ -40,12 +40,12 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     private GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener(){
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
-            for(MyButton button:buttonList){
-                if(button.onClick(e.getX(),e.getY())){
-                    break;
-                }
+        for(MyButton button:buttonList){
+            if(button.onClick(e.getX(),e.getY())){
+                break;
             }
-            return true;
+        }
+        return true;
         }
     };
 
@@ -95,13 +95,13 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
             public boolean add(Integer o) {
                 boolean valid= false;
                 if(contains(o)){
-                    return true;
+                    valid=true;
                 }else{
-                    return super.add(o);
+                    valid=super.add(o);
                 }
+                return valid;
             }
         };
-
         attachSwipe();
     }
 

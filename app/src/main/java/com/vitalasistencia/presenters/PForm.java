@@ -59,4 +59,9 @@ public class PForm implements IForm.Presenter {
     public void onClickCancelButton() {
         view.DeleteUser();
     }
+
+    @Override
+    public void onClickImage() {
+
+    }
 }

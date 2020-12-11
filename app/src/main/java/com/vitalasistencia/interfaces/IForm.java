@@ -6,6 +6,7 @@ public interface IForm {
         String getError(String error_code);
         void onClickAddSpinner();
         void onClickCancelButton();
+        void onClickImage();
     }
 
     public interface View {

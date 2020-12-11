@@ -36,10 +36,14 @@
     <string name="developer">Developer :</string>
     <string name="add">Add</string>
     <string name="date_not_valid">Invalid date or format</string>
-    <string name="phone_not_valid">Wrong sintax of phone</string>
+    <string name="phone_not_valid">Wrong sintax of phone\n
+        Please input a number between 10 and 13(0 includes or +)\n
+        Examples: +3412345678 003412345678</string>
     <string name="email_not_valid">Not valid email</string>
     <string name="address_not_valid">Address not valid</string>
-    <string name="affiliate_not_valid">Not valid Affiliate Number</string>
+    <string name="affiliate_not_valid">Not valid Affiliate Number\n
+        Must be 3 numbers followed by 4 Caps characters\n
+        Examples: 111AAAA 123ABCD</string>
     <string name="delete">Delete</string>
 
 </resources>

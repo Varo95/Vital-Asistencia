@@ -1,9 +1,12 @@
 package com.vitalasistencia.views;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,11 +16,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.vitalasistencia.R;
@@ -51,7 +60,11 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     private DatePickerDialog datePickerDialog;
     private int Year, Month, Day;
     private String id;
+    private ImageView imageView_Form;
     private boolean creatinguser = false;
+    final private int CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 123;
+    final private int CODE_CAMERA = 123;
+    private ConstraintLayout constraintLayoutFormActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +120,38 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
 
         //Creamos un nuevo usuario
         BUser user = new BUser();
+
+        //Creamos el puntero hacia el imageview del formulario
+        imageView_Form = findViewById(R.id.imageView_Form);
+        constraintLayoutFormActivity = findViewById(R.id.CL_FormActivity);
+        imageView_Form.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Calling presenter.onClickImage");
+                int WriteExternalStoragePermission = ContextCompat.checkSelfPermission(myContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                Log.d("MainActivity", "WRITE_EXTERNAL_STORAGE Permission: " + WriteExternalStoragePermission);
+
+                if (WriteExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                    // Permiso denegado
+                    // A partir de Marshmallow (6.0) se pide aceptar o rechazar el permiso en tiempo de ejecución
+                    // En las versiones anteriores no es posible hacerlo
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                        ActivityCompat.requestPermissions(FormActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, CODE_WRITE_EXTERNAL_STORAGE_PERMISSION);
+                        // Una vez que se pide aceptar o rechazar el permiso se ejecuta el método "onRequestPermissionsResult" para manejar la respuesta
+                        // Si el usuario marca "No preguntar más" no se volverá a mostrar este diálogo
+                    } else {
+                        Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.About), Snackbar.LENGTH_LONG)
+                                .show();
+                    }
+                } else {
+                    // Permiso aceptado
+                    Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.app_name), Snackbar.LENGTH_LONG)
+                            .show();
+                }
+                //TODO implementar añadir imagen modelo vista-presentador
+                //presenter.onClickImage();
+            }
+        });
 
         //Creamos punteros para el textedit de la fecha
         dateEditText = findViewById(R.id.TEI_date_search);
@@ -387,4 +432,22 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         finish();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case CODE_WRITE_EXTERNAL_STORAGE_PERMISSION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permiso aceptado
+                    Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.app_name), Snackbar.LENGTH_LONG)
+                            .show();
+                } else {
+                    // Permiso rechazado
+                    Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.About), Snackbar.LENGTH_LONG)
+                            .show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
 }
