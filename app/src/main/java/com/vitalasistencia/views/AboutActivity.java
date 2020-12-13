@@ -1,15 +1,14 @@
 package com.vitalasistencia.views;
 
 import android.os.Bundle;
-
-import com.vitalasistencia.R;
-import com.vitalasistencia.interfaces.IAbout;
+import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
-import android.view.View;
+import com.vitalasistencia.R;
+import com.vitalasistencia.interfaces.IAbout;
 
 public class AboutActivity extends AppCompatActivity implements IAbout.View {
 
@@ -17,7 +16,7 @@ public class AboutActivity extends AppCompatActivity implements IAbout.View {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG,"Starting on Create");
+        Log.d(TAG, "Starting on Create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         setTheme(R.style.Theme_VitalAsistencia_About);
@@ -37,7 +36,6 @@ public class AboutActivity extends AppCompatActivity implements IAbout.View {
         } else {
             Log.d(TAG, "Error loading toolbar");
         }
-
     }
 
     @Override

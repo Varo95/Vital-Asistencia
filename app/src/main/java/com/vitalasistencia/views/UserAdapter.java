@@ -2,7 +2,6 @@ package com.vitalasistencia.views;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.icu.text.StringPrepParseException;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +44,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 byte[] decodedString = Base64.decode(item.getImage(), Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 photo_reciclerview.setImageBitmap(decodedByte);
-            }catch(Exception e){
+            } catch (Exception e) {
                 //e.printStackTrace();
                 System.out.println("Error desconocido");
             }

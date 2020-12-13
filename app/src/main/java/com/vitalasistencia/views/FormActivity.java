@@ -1,11 +1,16 @@
 package com.vitalasistencia.views;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,7 +29,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -33,6 +37,8 @@ import com.vitalasistencia.interfaces.IForm;
 import com.vitalasistencia.models.BUser;
 import com.vitalasistencia.presenters.PForm;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -61,7 +67,8 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     private String id;
     private ImageView imageView_Form;
     private boolean creatinguser = false;
-    final private int CODE_WRITE_EXTERNAL_STORAGE_PERMISSION= 123;
+    final private int CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 123;
+    private static final int REQUEST_SELECT_IMAGE = 201;
     final private int CODE_CAMERA = 123;
     private ConstraintLayout constraintLayoutFormActivity;
 
@@ -92,6 +99,15 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         } else {
             Log.d(TAG, "Error loading toolbar");
         }
+
+        Button resetImage=findViewById(R.id.button_reset_photo_Form);
+        resetImage.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Log.d(TAG,"Pressing resetImage button");
+                presenter.resetImage();
+            }
+        });
         //Declaramos el arrayList del Spinner
         letra = new ArrayList<String>();
         letra.add("Lunes");
@@ -109,8 +125,8 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         s.setAdapter(adapter);
 
         //Boton añadir del spinner
-        Button AddToSpinner = findViewById(R.id.add_spinner);
-        AddToSpinner.setOnClickListener(new View.OnClickListener() {
+        Button addToSpinner = findViewById(R.id.add_spinner);
+        addToSpinner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "Pressing ADD spinner button");
@@ -133,7 +149,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                 presenter.checkReadInternalStorage(WriteExternalStoragePermission);
 
                 //TODO implementar añadir imagen modelo vista-presentador
-                //presenter.onClickImage();
+                presenter.onClickImage();
             }
         });
 
@@ -327,7 +343,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_form, menu);
         //Si se está creando un usuario se quita la opción de borrar del menu contextual
-        if(creatinguser){
+        if (creatinguser) {
             menu.getItem(0).setEnabled(false);
         }
         return true;
@@ -391,7 +407,6 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                             public void onClick(DialogInterface dialogBox, int id) {
                                 if ((dialogInput.getText().toString().equals(p.toString()))) {
                                     dialogBox.cancel();
-                                    s.setSelection(adapter.getPosition(dialogInput.getText().toString()));
                                 } else {
                                     adapter.add(dialogInput.getText().toString());
                                     s.setSelection(adapter.getPosition(dialogInput.getText().toString()));
@@ -413,28 +428,28 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     public void DeleteUser() {
         //Borrar el usuario todavía sin implementar
         Log.d(TAG, "Starting DeleteButton");
-            AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
-            builder.setTitle(R.string.delete_user_dialog_tittle);
-            builder.setMessage(R.string.delete_user_dialog_message);
+        AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
+        builder.setTitle(R.string.delete_user_dialog_tittle);
+        builder.setMessage(R.string.delete_user_dialog_message);
 
-            //Accept Button
-            builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    presenter.onClickAcceptDeleteButton();
-                }
-            });
+        //Accept Button
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                presenter.onClickAcceptDeleteButton();
+            }
+        });
 
-            //Cancel Button
-            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-        }
+        //Cancel Button
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -459,7 +474,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
      * This method is called by Pform(Presentor) and show to user if write permission was or not granted.
      * @param n code of number
      */
-    public void getReadPermission(int n){
+    public void getReadPermission(int n) {
         switch (n) {
             case 0:
                 //Si la versión de android es superior a la 6, se ejecutará esta línea para pedir permisos en tiempo real
@@ -474,6 +489,72 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                 Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.P_write_accepted), Snackbar.LENGTH_LONG).show();
                 break;
             default:
+        }
+    }
+
+    @Override
+    public void getImageFromStorage() {
+        // Se le pide al sistema una imagen del dispositivo
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(
+                Intent.createChooser(intent, getResources().getString(R.string.choose_picture)),
+                REQUEST_SELECT_IMAGE);
+    }
+
+    @Override
+    public void resetImage() {
+        imageView_Form = findViewById(R.id.imageView_Form);
+        imageView_Form.setImageBitmap(null);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+
+            /*case (REQUEST_CAPTURE_IMAGE):
+                if(resultCode == Activity.RESULT_OK){
+                    // Se carga la imagen desde un objeto URI al imageView
+                    ImageView imageView = findViewById(R.id.imageView);
+                    imageView.setImageURI(uri);
+
+                    // Se le envía un broadcast a la Galería para que se actualice
+                    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    mediaScanIntent.setData(uri);
+                    sendBroadcast(mediaScanIntent);
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                    // Se borra el archivo temporal
+                    File file = new File(uri.getPath());
+                    file.delete();
+                }
+                break;*/
+            case (REQUEST_SELECT_IMAGE):
+                if (resultCode == Activity.RESULT_OK) {
+                    // Se carga la imagen desde un objeto Bitmap
+                    Uri selectedImage = data.getData();
+                    String selectedPath = selectedImage.getPath();
+
+                    if (selectedPath != null) {
+                        // Se leen los bytes de la imagen
+                        InputStream imageStream = null;
+                        try {
+                            imageStream = getContentResolver().openInputStream(selectedImage);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+
+                        // Se transformam los bytes de la imagen a un Bitmap
+                        Bitmap bmp = BitmapFactory.decodeStream(imageStream);
+                        Bitmap imageScaled = Bitmap.createScaledBitmap(bmp, 256, 256, false);
+
+                        // Se carga el Bitmap en el ImageView
+                        ImageView imageView = findViewById(R.id.imageView_Form);
+                        imageView.setImageBitmap(imageScaled);
+                    }
+                }
+                break;
         }
     }
 }

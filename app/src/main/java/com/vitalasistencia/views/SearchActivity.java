@@ -3,16 +3,6 @@ package com.vitalasistencia.views;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
-
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-import com.vitalasistencia.R;
-import com.vitalasistencia.interfaces.ISearch;
-import com.vitalasistencia.presenters.PSearch;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -20,6 +10,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.vitalasistencia.R;
+import com.vitalasistencia.interfaces.ISearch;
+import com.vitalasistencia.presenters.PSearch;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,16 +29,16 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
     private ISearch.Presenter presenter;
     private Context myContext;
     private Button buttonDate;
-    private Calendar calendar ;
+    private Calendar calendar;
     private TextInputLayout dateLayout;
     private TextInputEditText dateEditText;
-    private DatePickerDialog datePickerDialog ;
-    private int Year, Month, Day ;
+    private DatePickerDialog datePickerDialog;
+    private int Year, Month, Day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG,"Starting OnCreate");
+        Log.d(TAG, "Starting OnCreate");
         setTheme(R.style.Theme_VitalAsistencia_Search);
         setContentView(R.layout.activity_search);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -62,7 +61,7 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
         presenter = new PSearch(this);
 
         calendar = Calendar.getInstance();
-        Year = calendar.get(Calendar.YEAR) ;
+        Year = calendar.get(Calendar.YEAR);
         Month = calendar.get(Calendar.MONTH);
         Day = calendar.get(Calendar.DAY_OF_MONTH);
 
@@ -77,22 +76,22 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
         //Para que el usuario no pueda cambiar la fecha
         dateEditText.setEnabled(false);
 
-        buttonDate=(Button)findViewById(R.id.datePicker_Search);
+        buttonDate = (Button) findViewById(R.id.datePicker_Search);
         buttonDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 datePickerDialog = new DatePickerDialog(myContext, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        Log.d(TAG,"Clicked OK on Calendar");
+                        Log.d(TAG, "Clicked OK on Calendar");
                         dateEditText.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
                     }
-                },Year, Month, Day);
+                }, Year, Month, Day);
                 datePickerDialog.show();
             }
         });
 
-        Button Searchbutton= findViewById(R.id.button_search);
+        Button Searchbutton = findViewById(R.id.button_search);
         Searchbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,7 +154,7 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
 
     @Override
     public void SearchButton() {
-        Log.d(TAG,"SearchButton Clicked");
+        Log.d(TAG, "SearchButton Clicked");
         finish();
     }
 }

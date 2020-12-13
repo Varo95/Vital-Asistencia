@@ -63,7 +63,7 @@ public class PForm implements IForm.Presenter {
 
     @Override
     public void onClickImage() {
-
+        view.getImageFromStorage();
     }
 
     @Override
@@ -90,5 +90,10 @@ public class PForm implements IForm.Presenter {
         //En un futuro esto debería cambiarse para que borrase al usuario de la lista
         //de momento llama a este método de la vista porque es un método el cual me devuelve a la actividad anterior
         view.SaveUser();
+    }
+
+    @Override
+    public void resetImage() {
+        view.resetImage();
     }
 }
