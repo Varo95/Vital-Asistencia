@@ -38,4 +38,16 @@ public class PList implements IList.Presenter {
         Log.d(TAG,"Item"+affiliate_number+"selected");
         view.startFormActivity(affiliate_number);
     }
+
+    @Override
+    public void onClickSwipeEdit(String affiliate_number) {
+        Log.d(TAG,"Item"+affiliate_number+"editing");
+        view.startFormActivity(affiliate_number);
+    }
+
+    @Override
+    public void onClickSwipeDelete(int pos) {
+        Log.d(TAG,"Item"+pos+"deleting");
+        view.deleteUser(pos);
+    }
 }

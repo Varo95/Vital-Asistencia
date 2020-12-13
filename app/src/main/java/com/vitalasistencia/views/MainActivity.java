@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     private IList.Presenter presenter;
     private Context myContext;
     private ArrayList<BUser> items;
+    private UserAdapter adapter;
 
     @SuppressLint("ResourceType")
     @Override
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
         final RecyclerView recyclerView = findViewById(R.id.recyclerView_List);
 
         // Crea el Adaptador con los datos de la lista anterior
-        UserAdapter adapter = new UserAdapter(items);
+        adapter = new UserAdapter(items);
 
 
         // Asocia el elemento de la lista con una acción al ser pulsado
@@ -159,16 +160,15 @@ public class MainActivity extends AppCompatActivity implements IList.View {
                         "Delete", 30,
                         R.drawable.ic_delete_white_24dp,
                         Color.parseColor("#FF3C30"), pos -> {
-                            Toast.makeText(MainActivity.this,"Delete Click",Toast.LENGTH_SHORT).show();
-                            items.remove(items.get(pos));
-                            adapter.notifyItemRemoved(pos);
+                            //Toast.makeText(MainActivity.this,"Delete Click",Toast.LENGTH_SHORT).show();
+                            presenter.onClickSwipeDelete(pos);
                         }));
                 buffer.add(new MyButton(MainActivity.this,
                         "Update",30,
                         R.drawable.ic_edit_white_24dp,
                         Color.parseColor("#FF9502"), pos -> {
-                            Toast.makeText(MainActivity.this, "Update Click",Toast.LENGTH_SHORT).show();
-                            presenter.onClickReciclerViewItem(items.get(pos).getAffiliate_number());
+                            //Toast.makeText(MainActivity.this, "Update Click",Toast.LENGTH_SHORT).show();
+                            presenter.onClickSwipeEdit(items.get(pos).getAffiliate_number());
                         }));
             }
         };
@@ -271,5 +271,11 @@ public class MainActivity extends AppCompatActivity implements IList.View {
         Intent intent = new Intent(MainActivity.this, FormActivity.class);
         intent.putExtra("id",affiliate_number);
         startActivity(intent);
+    }
+
+    @Override
+    public void deleteUser(int pos) {
+        items.remove(items.get(pos));
+        adapter.notifyItemRemoved(pos);
     }
 }
