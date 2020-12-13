@@ -42,4 +42,6 @@
     <string name="delete">Eliminar</string>
     <string name="P_write_denied">Permiso de Escritura Denegado</string>
     <string name="P_write_accepted">Permiso de Escritura Concedido</string>
+    <string name="delete_user_dialog_tittle">¡Cuidado!</string>
+    <string name="delete_user_dialog_message">Estás apunto de borrar este usuario de la lista. ¿Estás seguro?</string>
 </resources>

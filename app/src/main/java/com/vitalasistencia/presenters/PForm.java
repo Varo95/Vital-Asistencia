@@ -84,4 +84,11 @@ public class PForm implements IForm.Presenter {
             view.getReadPermission(2);
         }
     }
+
+    @Override
+    public void onClickAcceptDeleteButton() {
+        //En un futuro esto debería cambiarse para que borrase al usuario de la lista
+        //de momento llama a este método de la vista porque es un método el cual me devuelve a la actividad anterior
+        view.SaveUser();
+    }
 }

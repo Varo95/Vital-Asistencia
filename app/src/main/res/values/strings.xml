@@ -47,5 +47,7 @@
     <string name="delete">Delete</string>
     <string name="P_write_denied">Write Permission Denied</string>
     <string name="P_write_accepted">Write Permission Granted</string>
+    <string name="delete_user_dialog_tittle">Alert!</string>
+    <string name="delete_user_dialog_message">Your are about to delete this user from list. Are you sure?</string>
 
 </resources>

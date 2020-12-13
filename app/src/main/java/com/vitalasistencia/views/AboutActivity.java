@@ -20,6 +20,7 @@ public class AboutActivity extends AppCompatActivity implements IAbout.View {
         Log.d(TAG,"Starting on Create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        setTheme(R.style.Theme_VitalAsistencia_About);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);

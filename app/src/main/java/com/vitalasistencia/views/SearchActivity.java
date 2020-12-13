@@ -40,8 +40,8 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG,"Starting OnCreate");
+        setTheme(R.style.Theme_VitalAsistencia_Search);
         setContentView(R.layout.activity_search);
-        setTheme(R.style.AppTheme_NoActionBar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);

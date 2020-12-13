@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "Starting onCreate");
-        setTheme(R.style.AppTheme_NoActionBar);
+        setTheme(R.style.Theme_VitalAsistencia_List);
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {

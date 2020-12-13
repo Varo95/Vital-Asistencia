@@ -8,6 +8,7 @@ public interface IForm {
         void onClickCancelButton();
         void onClickImage();
         void checkReadInternalStorage(int WriteExternalStoragePermission);
+        void onClickAcceptDeleteButton();
     }
 
     public interface View {

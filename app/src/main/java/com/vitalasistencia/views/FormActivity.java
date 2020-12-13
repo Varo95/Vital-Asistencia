@@ -68,6 +68,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "Starting onCreate");
+        setTheme(R.style.Theme_VitalAsistencia_Form);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
         myContext = this;
@@ -412,8 +413,28 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     public void DeleteUser() {
         //Borrar el usuario todavía sin implementar
         Log.d(TAG, "Starting DeleteButton");
-        finish();
-    }
+            AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
+            builder.setTitle(R.string.delete_user_dialog_tittle);
+            builder.setMessage(R.string.delete_user_dialog_message);
+
+            //Accept Button
+            builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    presenter.onClickAcceptDeleteButton();
+                }
+            });
+
+            //Cancel Button
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
