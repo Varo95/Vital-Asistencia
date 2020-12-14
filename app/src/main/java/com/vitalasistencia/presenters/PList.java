@@ -1,9 +1,9 @@
 package com.vitalasistencia.presenters;
 
+import android.os.Build;
 import android.util.Log;
 
 import com.vitalasistencia.interfaces.IList;
-import com.vitalasistencia.views.MainActivity;
 
 public class PList implements IList.Presenter {
 
@@ -23,31 +23,37 @@ public class PList implements IList.Presenter {
 
     @Override
     public void onClickSearchButton() {
-        Log.d(TAG,"Search Clicked");
+        Log.d(TAG, "Search Clicked");
         view.startSearchActivity();
     }
 
     @Override
-    public void onClickAboutButton(){
-        Log.d(TAG,"About clicked");
+    public void onClickAboutButton() {
+        Log.d(TAG, "About clicked");
         view.startAboutActivity();
     }
 
     @Override
     public void onClickReciclerViewItem(String affiliate_number) {
-        Log.d(TAG,"Item"+affiliate_number+"selected");
+        Log.d(TAG, "Item" + affiliate_number + "selected");
         view.startFormActivity(affiliate_number);
     }
 
     @Override
     public void onClickSwipeEdit(String affiliate_number) {
-        Log.d(TAG,"Item"+affiliate_number+"editing");
+        Log.d(TAG, "Item" + affiliate_number + "editing");
         view.startFormActivity(affiliate_number);
     }
 
     @Override
     public void onClickSwipeDelete(int pos) {
-        Log.d(TAG,"Item"+pos+"deleting");
+        Log.d(TAG, "Item" + pos + "deleting");
         view.deleteUser(pos);
+    }
+
+    @Override
+    public int getAndroidVersion() {
+        int result = (int) Build.VERSION.SDK_INT;
+        return result;
     }
 }

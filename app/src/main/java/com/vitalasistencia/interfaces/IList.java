@@ -16,5 +16,6 @@ public interface IList {
         void onClickReciclerViewItem(String id);
         void onClickSwipeEdit(String pos);
         void onClickSwipeDelete(int pos);
+        int getAndroidVersion();
     }
 }

@@ -44,6 +44,6 @@
     <string name="P_write_accepted">Permiso de Escritura Concedido</string>
     <string name="delete_user_dialog_tittle">¡Cuidado!</string>
     <string name="delete_user_dialog_message">Estás apunto de borrar este usuario de la lista. ¿Estás seguro?</string>
-    <string name="deleted_user">Borrado Usuario:</string>
+    <string name="deleted_user">Borrando Usuario:</string>
     <string name="choose_picture">Selecciona una imagen</string>
 </resources>

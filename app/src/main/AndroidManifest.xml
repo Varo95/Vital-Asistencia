@@ -27,7 +27,7 @@
         <activity
             android:name=".views.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.VitalAsistencia.List">
+            android:theme="@style/Theme.VitalAsistencia.List" android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

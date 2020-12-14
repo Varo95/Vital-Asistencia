@@ -40,13 +40,21 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         public void UserBind(BUser item) {
             email.setText(item.getEmail());
             address.setText(item.getAddress());
-            try {
-                byte[] decodedString = Base64.decode(item.getImage(), Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                photo_reciclerview.setImageBitmap(decodedByte);
-            } catch (Exception e) {
-                //e.printStackTrace();
-                System.out.println("Error desconocido");
+            //Este if sirve para si la imagen NO es una cadena vacía...
+            if (item.getImage() != "") {
+                try {
+                    byte[] decodedString = Base64.decode(item.getImage(), Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    photo_reciclerview.setImageBitmap(decodedByte);
+                    //...quita la imagen de fondo
+                    photo_reciclerview.setBackground(null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("Error desconocido");
+                }
+            } else {
+                photo_reciclerview.setBackgroundResource(R.mipmap.user_background);
+                photo_reciclerview.setImageBitmap(null);
             }
         }
     }

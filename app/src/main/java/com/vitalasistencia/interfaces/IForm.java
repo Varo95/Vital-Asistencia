@@ -7,16 +7,17 @@ public interface IForm {
         void onClickAddSpinner();
         void onClickCancelButton();
         void onClickImage();
-        void checkReadInternalStorage(int WriteExternalStoragePermission);
         void onClickAcceptDeleteButton();
         void resetImage();
+        void AcceptedPermission();
+        void DeniedPermission();
     }
 
     public interface View {
         void SaveUser();
         void onClickAddSpinner();
         void DeleteUser();
-        void getReadPermission(int n);
+        void showRequestPermission(int n);
         void getImageFromStorage();
         void resetImage();
     }

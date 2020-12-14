@@ -23,18 +23,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+
+//import java.util.List;
 
 public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
     int buttonWidth;
     private RecyclerView recyclerView;
-    private List<MyButton> buttonList;
+    private ArrayList<MyButton> buttonList;
     private GestureDetector gestureDetector;
     private int swipePosition = -1;
     private float swipeThreshold = 0.5f;
-    private Map<Integer, List<MyButton>> buttonBuffer;
+    private Map<Integer, ArrayList<MyButton>> buttonBuffer;
     private Queue<Integer> removerQueue;
 
     private GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
@@ -225,7 +226,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         }
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             if (dX < 0) {
-                List<MyButton> buffer = new ArrayList<>();
+                ArrayList<MyButton> buffer = new ArrayList<>();
                 if (!buttonBuffer.containsKey(pos)) {
                     instantiateMyButton(viewHolder, buffer);
                     buttonBuffer.put(pos, buffer);
@@ -240,7 +241,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         super.onChildDraw(c, recyclerView, viewHolder, translationX, dY, actionState, isCurrentlyActive);
     }
 
-    private void drawButton(Canvas c, View itemView, List<MyButton> buffer, int pos, float translationX) {
+    private void drawButton(Canvas c, View itemView, ArrayList<MyButton> buffer, int pos, float translationX) {
         float right = itemView.getRight();
         float dButtonWidth = -1 * translationX / buffer.size();
         for (MyButton button : buffer) {
@@ -250,5 +251,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
         }
     }
 
-    public abstract void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<MyButton> buffer);
+    public abstract void instantiateMyButton(RecyclerView.ViewHolder viewHolder, ArrayList<MyButton> buffer);
 }
+

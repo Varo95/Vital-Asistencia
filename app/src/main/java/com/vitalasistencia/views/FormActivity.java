@@ -27,7 +27,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -100,14 +99,17 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
             Log.d(TAG, "Error loading toolbar");
         }
 
-        Button resetImage=findViewById(R.id.button_reset_photo_Form);
-        resetImage.setOnClickListener(new View.OnClickListener(){
+        //Declaramos el botón de resetear la imagen
+        Button resetImage = findViewById(R.id.button_reset_photo_Form);
+        resetImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
-                Log.d(TAG,"Pressing resetImage button");
+            public void onClick(View view) {
+                Log.d(TAG, "Pressing resetImage button");
                 presenter.resetImage();
             }
         });
+        //TODO Botón de la cámara
+
         //Declaramos el arrayList del Spinner
         letra = new ArrayList<String>();
         letra.add("Lunes");
@@ -144,11 +146,9 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "Calling presenter.onClickImage");
-                int WriteExternalStoragePermission = ContextCompat.checkSelfPermission(myContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                Log.d(TAG, "WRITE_EXTERNAL_STORAGE Permission: " + WriteExternalStoragePermission);
-                presenter.checkReadInternalStorage(WriteExternalStoragePermission);
-
-                //TODO implementar añadir imagen modelo vista-presentador
+                Log.d(TAG, "WRITE_EXTERNAL_STORAGE Permission: ");
+                //Llama al presentador para comprobar que tiene permisos de lectura
+                //Vuelve a llamar al presentador para añadir una imagen
                 presenter.onClickImage();
             }
         });
@@ -457,12 +457,10 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
             case CODE_WRITE_EXTERNAL_STORAGE_PERMISSION:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permiso aceptado
-                    Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.P_write_accepted), Snackbar.LENGTH_LONG)
-                            .show();
+                    presenter.AcceptedPermission();
                 } else {
                     // Permiso rechazado
-                    Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.P_write_denied), Snackbar.LENGTH_LONG)
-                            .show();
+                    presenter.DeniedPermission();
                 }
                 break;
             default:
@@ -472,9 +470,10 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
 
     /**
      * This method is called by Pform(Presentor) and show to user if write permission was or not granted.
+     *
      * @param n code of number
      */
-    public void getReadPermission(int n) {
+    public void showRequestPermission(int n) {
         switch (n) {
             case 0:
                 //Si la versión de android es superior a la 6, se ejecutará esta línea para pedir permisos en tiempo real
@@ -483,10 +482,6 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
             case 1:
                 // Permiso denegado
                 Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.P_write_denied), Snackbar.LENGTH_LONG).show();
-                break;
-            case 2:
-                // Permiso aceptado
-                Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.P_write_accepted), Snackbar.LENGTH_LONG).show();
                 break;
             default:
         }
@@ -507,13 +502,14 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     public void resetImage() {
         imageView_Form = findViewById(R.id.imageView_Form);
         imageView_Form.setImageBitmap(null);
+        imageView_Form.setBackgroundResource(R.mipmap.user_background);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-
+            //TODO implementar el boton de la camara
             /*case (REQUEST_CAPTURE_IMAGE):
                 if(resultCode == Activity.RESULT_OK){
                     // Se carga la imagen desde un objeto URI al imageView
@@ -552,6 +548,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                         // Se carga el Bitmap en el ImageView
                         ImageView imageView = findViewById(R.id.imageView_Form);
                         imageView.setImageBitmap(imageScaled);
+                        imageView.setBackground(null);
                     }
                 }
                 break;

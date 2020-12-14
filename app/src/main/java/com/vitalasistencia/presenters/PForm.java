@@ -1,8 +1,11 @@
 package com.vitalasistencia.presenters;
 
+import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
+
+import androidx.core.content.ContextCompat;
 
 import com.vitalasistencia.R;
 import com.vitalasistencia.interfaces.IForm;
@@ -19,40 +22,40 @@ public class PForm implements IForm.Presenter {
 
     @Override
     public void onClickSaveButton() {
-        Log.d(TAG,"Save Button Clicked");
+        Log.d(TAG, "Save Button Clicked");
         view.SaveUser();
     }
 
-    public String getError(String error_code){
-        String error_msg="";
-        switch(error_code){
+    public String getError(String error_code) {
+        String error_msg = "";
+        switch (error_code) {
             case "Not valid date":
-                error_msg= MyApp.getContext().getResources().getString(R.string.date_not_valid);
+                error_msg = MyApp.getContext().getResources().getString(R.string.date_not_valid);
                 break;
             case "Not valid phone":
-                error_msg=MyApp.getContext().getResources().getString(R.string.phone_not_valid);
+                error_msg = MyApp.getContext().getResources().getString(R.string.phone_not_valid);
                 break;
             case "Not valid email":
-                error_msg=MyApp.getContext().getResources().getString(R.string.email_not_valid);
+                error_msg = MyApp.getContext().getResources().getString(R.string.email_not_valid);
                 break;
             case "Not valid address":
-                error_msg=MyApp.getContext().getResources().getString(R.string.address_not_valid);
+                error_msg = MyApp.getContext().getResources().getString(R.string.address_not_valid);
                 break;
             case "Not valid affiliate":
-                error_msg=MyApp.getContext().getResources().getString(R.string.affiliate_not_valid);
+                error_msg = MyApp.getContext().getResources().getString(R.string.affiliate_not_valid);
                 break;
             case "Valid":
-                error_msg="";
+                error_msg = "";
                 break;
             default:
-                error_msg="";
+                error_msg = "";
         }
         return error_msg;
     }
 
     @Override
     public void onClickAddSpinner() {
-        Log.d(TAG,"AddToSpinner Clicked");
+        Log.d(TAG, "AddToSpinner Clicked");
         view.onClickAddSpinner();
     }
 
@@ -63,27 +66,25 @@ public class PForm implements IForm.Presenter {
 
     @Override
     public void onClickImage() {
-        view.getImageFromStorage();
-    }
-
-    @Override
-    public void checkReadInternalStorage(int WriteExternalStoragePermission) {
+        int WriteExternalStoragePermission = ContextCompat.checkSelfPermission(MyApp.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        Log.d(TAG, "clickImage" + WriteExternalStoragePermission);
         if (WriteExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
             // Permiso denegado
             // A partir de Marshmallow (6.0) se pide aceptar o rechazar el permiso en tiempo de ejecución
             // En las versiones anteriores no es posible hacerlo
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                view.getReadPermission(0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                view.showRequestPermission(0);
                 // Una vez que se pide aceptar o rechazar el permiso se ejecuta el método "onRequestPermissionsResult" para manejar la respuesta
                 // Si el usuario marca "No preguntar más" no se volverá a mostrar este diálogo
             } else {
-                view.getReadPermission(1);
+                view.showRequestPermission(1);
             }
         } else {
             // Permiso aceptado
-            view.getReadPermission(2);
+            view.getImageFromStorage();
         }
     }
+
 
     @Override
     public void onClickAcceptDeleteButton() {
@@ -95,5 +96,15 @@ public class PForm implements IForm.Presenter {
     @Override
     public void resetImage() {
         view.resetImage();
+    }
+
+    @Override
+    public void AcceptedPermission() {
+        view.getImageFromStorage();
+    }
+
+    @Override
+    public void DeniedPermission() {
+        view.showRequestPermission(1);
     }
 }

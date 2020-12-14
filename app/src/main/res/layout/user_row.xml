@@ -9,10 +9,11 @@
         android:id="@+id/photo_reciclerview"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginLeft="5dp"
+        android:background="@mipmap/user_background"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@mipmap/user_background" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/firstName"
