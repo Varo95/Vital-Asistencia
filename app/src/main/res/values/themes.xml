@@ -22,23 +22,26 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.VitalAsistencia.List.LoadFailed" parent="Theme.VitalAsistencia.List">
-        <item name="android:windowBackground">@mipmap/ic_launcher</item>
+    <style name="Theme.VitalAsistencia.List.Loadv21" parent="Theme.VitalAsistencia.List">
+        <item name="android:windowBackground">@color/backscreen</item>
     </style>
 
     <style name="Theme.VitalAsistencia.Form" parent="AppTheme.NoActionBar">
         <item name="colorPrimary">@color/background</item>
         <item name="colorAccent">@color/black</item>
+        <item name="android:windowBackground">@color/backscreen</item>
     </style>
 
     <style name="Theme.VitalAsistencia.Search" parent="AppTheme.NoActionBar">
         <item name="colorPrimary">@color/background</item>
         <item name="colorAccent">@color/black</item>
+        <item name="android:windowBackground">@color/backscreen</item>
     </style>
 
     <style name="Theme.VitalAsistencia.About" parent="AppTheme.NoActionBar">
         <item name="colorPrimary">@color/background</item>
         <item name="colorAccent">@color/black</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 
     <style name="Theme.VitalAsistencia.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

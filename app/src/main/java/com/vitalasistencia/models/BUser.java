@@ -50,7 +50,11 @@ public class BUser {
     }
 
     public void setImage(String image) {
-        this.image = image;
+        if(image.equals("")){
+            return;
+        }else{
+            this.image = image;
+        }
     }
 
     /**

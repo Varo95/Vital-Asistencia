@@ -1,10 +1,12 @@
 package com.vitalasistencia.presenters;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.vitalasistencia.R;
@@ -15,7 +17,7 @@ public class PForm implements IForm.Presenter {
 
     String TAG = "Vital_Asistencia/PForm";
     private IForm.View view;
-
+    final private int CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 123;
     public PForm(IForm.View view) {
         this.view = view;
     }
@@ -64,19 +66,22 @@ public class PForm implements IForm.Presenter {
         view.DeleteUser();
     }
 
+    //He tenido que hacer la funcion pasandole la actividad porque el ActivityCompat no podía ejecutarse
+    //con otra actividad
     @Override
-    public void onClickImage() {
+    public void onClickImage(Activity activity) {
         int WriteExternalStoragePermission = ContextCompat.checkSelfPermission(MyApp.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
         Log.d(TAG, "clickImage" + WriteExternalStoragePermission);
         if (WriteExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
             // Permiso denegado
-            // A partir de Marshmallow (6.0) se pide aceptar o rechazar el permiso en tiempo de ejecución
+            // A partir de Marshmallow (6.0) se puede volver a pedir el permiso
             // En las versiones anteriores no es posible hacerlo
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                //Aquí se le vuelve a pedir el permiso
+                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CODE_WRITE_EXTERNAL_STORAGE_PERMISSION);
                 view.showRequestPermission(0);
-                // Una vez que se pide aceptar o rechazar el permiso se ejecuta el método "onRequestPermissionsResult" para manejar la respuesta
-                // Si el usuario marca "No preguntar más" no se volverá a mostrar este diálogo
             } else {
+                //Permiso denegado
                 view.showRequestPermission(1);
             }
         } else {

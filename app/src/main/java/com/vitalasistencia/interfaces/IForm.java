@@ -1,12 +1,14 @@
 package com.vitalasistencia.interfaces;
 
+import android.app.Activity;
+
 public interface IForm {
     public interface Presenter {
         void onClickSaveButton();
         String getError(String error_code);
         void onClickAddSpinner();
         void onClickCancelButton();
-        void onClickImage();
+        void onClickImage(Activity activity);
         void onClickAcceptDeleteButton();
         void resetImage();
         void AcceptedPermission();

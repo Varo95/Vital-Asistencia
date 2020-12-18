@@ -146,10 +146,9 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "Calling presenter.onClickImage");
-                Log.d(TAG, "WRITE_EXTERNAL_STORAGE Permission: ");
                 //Llama al presentador para comprobar que tiene permisos de lectura
                 //Vuelve a llamar al presentador para añadir una imagen
-                presenter.onClickImage();
+                presenter.onClickImage(FormActivity.this);
             }
         });
 
@@ -200,6 +199,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                             day = "0" + dayOfMonth;
                         }
                         dateEditText.setText(day + "/" + (month + 1) + "/" + year);
+                        dateLayout.setError(presenter.getError("Valid"));
                     }
                 }, Year, Month, Day);
                 datePickerDialog.show();
@@ -469,15 +469,15 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     }
 
     /**
-     * This method is called by Pform(Presentor) and show to user if write permission was or not granted.
-     *
+     * This method is called by Pform(Presentor) and show to user if asking or denied permissions
      * @param n code of number
      */
     public void showRequestPermission(int n) {
         switch (n) {
             case 0:
-                //Si la versión de android es superior a la 6, se ejecutará esta línea para pedir permisos en tiempo real
-                ActivityCompat.requestPermissions(FormActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CODE_WRITE_EXTERNAL_STORAGE_PERMISSION);
+                //Si la versión de android es superior a la 6, se podrá otra vez pedir permisos, por lo tanto aquí mostraría
+                //Un mensaje en el snackbar cuando salte el pop-up de permisos
+                Snackbar.make(constraintLayoutFormActivity, getResources().getString(R.string.P_write_asking), Snackbar.LENGTH_LONG).show();
                 break;
             case 1:
                 // Permiso denegado
