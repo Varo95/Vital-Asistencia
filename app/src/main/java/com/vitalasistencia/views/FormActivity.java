@@ -1,6 +1,5 @@
 package com.vitalasistencia.views;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -11,10 +10,15 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,10 +27,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -36,10 +40,15 @@ import com.vitalasistencia.interfaces.IForm;
 import com.vitalasistencia.models.BUser;
 import com.vitalasistencia.presenters.PForm;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.text.Normalizer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class FormActivity extends AppCompatActivity implements IForm.View {
 
@@ -68,7 +77,6 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     private boolean creatinguser = false;
     final private int CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 123;
     private static final int REQUEST_SELECT_IMAGE = 201;
-    final private int CODE_CAMERA = 123;
     private ConstraintLayout constraintLayoutFormActivity;
 
     @Override
@@ -98,6 +106,36 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         } else {
             Log.d(TAG, "Error loading toolbar");
         }
+        //Creamos un nuevo usuario
+        BUser user = new BUser();
+
+        //Creamos el puntero hacia el imageview del formulario
+        imageView_Form = findViewById(R.id.imageView_Form);
+        constraintLayoutFormActivity = findViewById(R.id.CL_FormActivity);
+        imageView_Form.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Calling presenter.onClickImage");
+                //Llama al presentador para comprobar que tiene permisos de lectura
+                //Vuelve a llamar al presentador para añadir una imagen
+                presenter.onClickImage(FormActivity.this);
+            }
+        });
+
+        //Creamos el puntero hacia el botón de la cámara
+        Button buttonCamera = findViewById(R.id.button_camera_Form);
+        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+            buttonCamera.setEnabled(false);
+        } else {
+            buttonCamera.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+                        //presenter.onClickCamera(FormActivity.this);
+                    }
+                }
+            });
+        }
 
         //Declaramos el botón de resetear la imagen
         Button resetImage = findViewById(R.id.button_reset_photo_Form);
@@ -108,7 +146,6 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                 presenter.resetImage();
             }
         });
-        //TODO Botón de la cámara
 
         //Declaramos el arrayList del Spinner
         letra = new ArrayList<String>();
@@ -133,22 +170,6 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
             public void onClick(View view) {
                 Log.d(TAG, "Pressing ADD spinner button");
                 presenter.onClickAddSpinner();
-            }
-        });
-
-        //Creamos un nuevo usuario
-        BUser user = new BUser();
-
-        //Creamos el puntero hacia el imageview del formulario
-        imageView_Form = findViewById(R.id.imageView_Form);
-        constraintLayoutFormActivity = findViewById(R.id.CL_FormActivity);
-        imageView_Form.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "Calling presenter.onClickImage");
-                //Llama al presentador para comprobar que tiene permisos de lectura
-                //Vuelve a llamar al presentador para añadir una imagen
-                presenter.onClickImage(FormActivity.this);
             }
         });
 
@@ -348,6 +369,26 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         }
         return true;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_delete) {
+            Log.d(TAG, "Menu Delete click");
+            //presenter.();
+            return true;
+        }
+        if (id == R.id.action_reset) {
+            Log.d(TAG, "Menu Reset click");
+            presenter.onClickResetForm();
+            return true;
+        }
+        if (id == R.id.action_help) {
+            Log.d(TAG, "Menu Help click");
+            //presenter.();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onStart() {
@@ -386,7 +427,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     }
 
     @Override
-    public void SaveUser() {
+    public void saveUser() {
         Log.d(TAG, "Starting SaveButton");
         finish();
     }
@@ -425,7 +466,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     }
 
     @Override
-    public void DeleteUser() {
+    public void deleteUser() {
         //Borrar el usuario todavía sin implementar
         Log.d(TAG, "Starting DeleteButton");
         AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
@@ -457,10 +498,10 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
             case CODE_WRITE_EXTERNAL_STORAGE_PERMISSION:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permiso aceptado
-                    presenter.AcceptedPermission();
+                    presenter.acceptedPermission();
                 } else {
                     // Permiso rechazado
-                    presenter.DeniedPermission();
+                    presenter.deniedPermission();
                 }
                 break;
             default:
@@ -506,10 +547,27 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     }
 
     @Override
+    public void resetForm() {
+        dateEditText.setText("");
+        dateLayout.setError(presenter.getError("Valid"));
+        phoneEditText.setText("");
+        phoneLayout.setError(presenter.getError("Valid"));
+        emailEditText.setText("");
+        emailLayout.setError(presenter.getError("Valid"));
+        addressEditText.setText("");
+        addressLayout.setError(presenter.getError("Valid"));
+        if(id!=null) {
+            affiliateEditText.setText(id);
+        }else{
+            affiliateEditText.setText("");
+        }
+        affiliateLayout.setError(presenter.getError("Valid"));
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            //TODO implementar el boton de la camara
             /*case (REQUEST_CAPTURE_IMAGE):
                 if(resultCode == Activity.RESULT_OK){
                     // Se carga la imagen desde un objeto URI al imageView

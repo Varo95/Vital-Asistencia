@@ -11,16 +11,18 @@ public interface IForm {
         void onClickImage(Activity activity);
         void onClickAcceptDeleteButton();
         void resetImage();
-        void AcceptedPermission();
-        void DeniedPermission();
+        void acceptedPermission();
+        void deniedPermission();
+        void onClickResetForm();
     }
 
     public interface View {
-        void SaveUser();
+        void saveUser();
         void onClickAddSpinner();
-        void DeleteUser();
+        void deleteUser();
         void showRequestPermission(int n);
         void getImageFromStorage();
         void resetImage();
+        void resetForm();
     }
 }

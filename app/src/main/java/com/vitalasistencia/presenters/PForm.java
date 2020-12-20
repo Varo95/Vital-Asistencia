@@ -25,7 +25,7 @@ public class PForm implements IForm.Presenter {
     @Override
     public void onClickSaveButton() {
         Log.d(TAG, "Save Button Clicked");
-        view.SaveUser();
+        view.saveUser();
     }
 
     public String getError(String error_code) {
@@ -63,7 +63,7 @@ public class PForm implements IForm.Presenter {
 
     @Override
     public void onClickCancelButton() {
-        view.DeleteUser();
+        view.deleteUser();
     }
 
     //He tenido que hacer la funcion pasandole la actividad porque el ActivityCompat no podía ejecutarse
@@ -95,7 +95,7 @@ public class PForm implements IForm.Presenter {
     public void onClickAcceptDeleteButton() {
         //En un futuro esto debería cambiarse para que borrase al usuario de la lista
         //de momento llama a este método de la vista porque es un método el cual me devuelve a la actividad anterior
-        view.SaveUser();
+        view.saveUser();
     }
 
     @Override
@@ -104,12 +104,18 @@ public class PForm implements IForm.Presenter {
     }
 
     @Override
-    public void AcceptedPermission() {
+    public void acceptedPermission() {
         view.getImageFromStorage();
     }
 
     @Override
-    public void DeniedPermission() {
+    public void deniedPermission() {
         view.showRequestPermission(1);
     }
+
+    @Override
+    public void onClickResetForm() {
+        view.resetForm();
+    }
+
 }
