@@ -38,7 +38,7 @@
     <string name="address_not_valid">Dirección no válida.\n
         Debe empezar por C o A</string>
     <string name="affiliate_not_valid">Numero de afiliado no valido\n
-        Debe de tener 3 numeros seguidos de 4 letras mayusculas\n
+        Debe de tener 3 numeros seguidos de 5 letras mayusculas\n
         Ejemplos: 111AAAA 123ABCD</string>
     <string name="delete">Eliminar</string>
     <string name="P_write_denied">Permiso de Escritura Denegado</string>
@@ -49,4 +49,8 @@
     <string name="choose_picture">Selecciona una imagen</string>
     <string name="P_write_asking">Preguntando por permiso</string>
     <string name="reset_form">Resetear formulario</string>
+    <string name="user_Inserted_Rejected">El usuario no pudo insertarse</string>
+    <string name="user_Inserted_Accepted">Usuario insertado correctamente</string>
+    <string name="unknow_Error">Error desconocido</string>
+    <string name="unfilled_field">Este campo debe ser rellenado</string>
 </resources>

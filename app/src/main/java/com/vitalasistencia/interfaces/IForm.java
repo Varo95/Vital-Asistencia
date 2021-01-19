@@ -2,9 +2,11 @@ package com.vitalasistencia.interfaces;
 
 import android.app.Activity;
 
+import com.vitalasistencia.models.BUser;
+
 public interface IForm {
     public interface Presenter {
-        void onClickSaveButton();
+        void onClickSaveButton(BUser user);
         String getError(String error_code);
         void onClickAddSpinner();
         void onClickCancelButton();
@@ -24,5 +26,6 @@ public interface IForm {
         void getImageFromStorage();
         void resetImage();
         void resetForm();
+        void showMessageForm(int code);
     }
 }

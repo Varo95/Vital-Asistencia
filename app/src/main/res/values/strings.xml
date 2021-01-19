@@ -43,7 +43,7 @@
     <string name="address_not_valid">Address not valid.\n
         May Start with C or A</string>
     <string name="affiliate_not_valid">Not valid Affiliate Number\n
-        Must be 3 numbers followed by 4 Caps characters\n
+        Must be 3 numbers followed by 5 Caps characters\n
         Examples: 111AAAA 123ABCD</string>
     <string name="delete">Delete</string>
     <string name="deleted_user">Deleting User:</string>
@@ -54,5 +54,9 @@
     <string name="choose_picture">Select a picture</string>
     <string name="P_write_asking">Asking for permission</string>
     <string name="reset_form">Reset form</string>
+    <string name="user_Inserted_Rejected">User cannot be inserted. Change Affiliate Number</string>
+    <string name="user_Inserted_Accepted">User properly inserted</string>
+    <string name="unknow_Error">Unknow Error</string>
+    <string name="unfilled_field">This field must be filled</string>
 
 </resources>

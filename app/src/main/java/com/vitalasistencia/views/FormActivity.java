@@ -9,12 +9,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.StrictMode;
-import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,9 +24,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -40,15 +39,11 @@ import com.vitalasistencia.interfaces.IForm;
 import com.vitalasistencia.models.BUser;
 import com.vitalasistencia.presenters.PForm;
 
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.text.Normalizer;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class FormActivity extends AppCompatActivity implements IForm.View {
 
@@ -57,6 +52,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     private Context myContext;
     private TextInputLayout dateLayout;
     private TextInputEditText dateEditText;
+    private SwitchCompat prepareFood;
     private TextInputLayout phoneLayout;
     private TextInputEditText phoneEditText;
     private TextInputLayout emailLayout;
@@ -124,13 +120,13 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
 
         //Creamos el puntero hacia el botón de la cámara
         Button buttonCamera = findViewById(R.id.button_camera_Form);
-        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             buttonCamera.setEnabled(false);
         } else {
             buttonCamera.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+                    if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
                         //presenter.onClickCamera(FormActivity.this);
                     }
                 }
@@ -162,6 +158,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         //Creamos el spinner y le inyectamos los valores del adaptador
         s = (Spinner) findViewById(R.id.spinner_Form);
         s.setAdapter(adapter);
+
 
         //Boton añadir del spinner
         Button addToSpinner = findViewById(R.id.add_spinner);
@@ -219,13 +216,20 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                         if (dayOfMonth < 10) {
                             day = "0" + dayOfMonth;
                         }
-                        dateEditText.setText(day + "/" + (month + 1) + "/" + year);
+                        String month0 = "" + (month + 1);
+                        if (month < 10) {
+                            month0 = "0" + month0;
+                        }
+                        dateEditText.setText(day + "/" + month0 + "/" + year);
                         dateLayout.setError(presenter.getError("Valid"));
                     }
                 }, Year, Month, Day);
                 datePickerDialog.show();
             }
         });
+
+        //Creamos punteros para el switch de preparar comida
+        prepareFood = (SwitchCompat) findViewById(R.id.switch_food_Form);
 
         //Creamos punteros para el textedit del telefono
         phoneEditText = findViewById(R.id.TEI_phone);
@@ -315,21 +319,12 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                 }
             }
         });
-        //Botón de guardar
-        Button SaveButton = findViewById(R.id.Save_Form);
-        SaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "Calling presenter.ClickSaveButton");
-                presenter.onClickSaveButton();
-            }
-        });
-
         id = getIntent().getStringExtra("id");
         Log.d(TAG, "Get String");
 
         if (id != null) {
             //set text noseque id
+            //llamar al presentador para recuperar TODOS los campos del usuario a editar
             affiliateEditText.setText(id);
         } else {
             //Cambia el booleano para usarlo en otras funciones
@@ -349,7 +344,86 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                 }
             });
         }
+        //Botón de guardar
+        Button SaveButton = findViewById(R.id.Save_Form);
+        SaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Calling presenter.ClickSaveButton");
+                int code=0;
+                //Intentamos pasar la imagen a base64
+                String result = null;
+                try {
+                    BitmapDrawable drawable = (BitmapDrawable) imageView_Form.getDrawable();
+                    if (drawable == null) {
+                        result = "";
+                    } else {
+                        Bitmap bitmap = Bitmap.createBitmap(drawable.getBitmap());
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 90, bos);
+                        byte[] imageBytes = bos.toByteArray();
+                        result = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (result != null) {
+                    user.setImage(result);
+                }
+                user.setFood(prepareFood.isChecked());
+                if(!user.setDate("dd/MM/yyyy" ,dateEditText.getText().toString())){
+                    code=1;
+                }else if(!(user.setPhone(phoneEditText.getText().toString()))){
+                    code=2;
+                }else if(!(user.setEmail(emailEditText.getText().toString()))){
+                    code=3;
+                }else if(!(user.setAddress(addressEditText.getText().toString()))){
+                    code=4;
+                }else if(!(user.setAffiliate_number(affiliateEditText.getText().toString()))){
+                    code=5;
+                }else if(code==0){
+                    presenter.onClickSaveButton(user);
+                }
+            }
+        });
     }
+
+    @Override
+    public void showMessageForm(int code) {
+        switch (code) {
+            //Llamar al presentador para que muestre un mensaje de que NO puede dejar los campos vacíos
+            case 0:
+                Toast.makeText(FormActivity.this, getString(R.string.user_Inserted_Accepted), Toast.LENGTH_SHORT).show();
+                break;
+            case 1:
+                Snackbar.make(constraintLayoutFormActivity, presenter.getError("Not valid date"), Snackbar.LENGTH_LONG).show();
+                dateLayout.setError(presenter.getError("Unfilled Field"));
+                break;
+            case 2:
+                Snackbar.make(constraintLayoutFormActivity, presenter.getError("Not valid phone"), Snackbar.LENGTH_LONG).show();
+                phoneLayout.setError(presenter.getError("Unfilled Field"));
+                break;
+            case 3:
+                Snackbar.make(constraintLayoutFormActivity, presenter.getError("Not valid email"), Snackbar.LENGTH_LONG).show();
+                emailLayout.setError(presenter.getError("Unfilled Field"));
+                break;
+            case 4:
+                Snackbar.make(constraintLayoutFormActivity, presenter.getError("Not valid address"), Snackbar.LENGTH_LONG).show();
+                addressLayout.setError(presenter.getError("Unfilled Field"));
+                break;
+            case 5:
+                Snackbar.make(constraintLayoutFormActivity, presenter.getError("Not valid affiliate"), Snackbar.LENGTH_LONG).show();
+                affiliateLayout.setError(presenter.getError("Unfilled Field"));
+                break;
+            case 6:
+                Snackbar.make(constraintLayoutFormActivity, presenter.getError("User cannot be Inserted"),Snackbar.LENGTH_LONG).show();
+                affiliateLayout.setError(presenter.getError("User cannot be Inserted"));
+                break;
+            default:
+                Snackbar.make(constraintLayoutFormActivity, presenter.getError("Error"), Snackbar.LENGTH_LONG).show();
+        }
+    }
+
 
     @Override
     public boolean onNavigateUp() {
@@ -369,6 +443,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         }
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -511,8 +586,10 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
 
     /**
      * This method is called by Pform(Presentor) and show to user if asking or denied permissions
+     *
      * @param n code of number
      */
+    @Override
     public void showRequestPermission(int n) {
         switch (n) {
             case 0:
@@ -556,12 +633,14 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         emailLayout.setError(presenter.getError("Valid"));
         addressEditText.setText("");
         addressLayout.setError(presenter.getError("Valid"));
-        if(id!=null) {
+        if (id != null) {
             affiliateEditText.setText(id);
-        }else{
+        } else {
             affiliateEditText.setText("");
         }
         affiliateLayout.setError(presenter.getError("Valid"));
+        imageView_Form.setImageBitmap(null);
+        imageView_Form.setBackgroundResource(R.mipmap.user_background);
     }
 
     @Override

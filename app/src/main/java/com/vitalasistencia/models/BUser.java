@@ -1,5 +1,12 @@
 package com.vitalasistencia.models;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.util.Base64;
+import android.widget.ImageView;
+
+import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,13 +14,19 @@ import java.util.Date;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-public class BUser {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class BUser extends RealmObject {
     private String date;
     private String phone;
     private String email;
     private String address;
+    @PrimaryKey
     private String affiliate_number;
     private String image;
+    private String dayWeek;
+    private boolean food;
 
     public BUser() {
         this.date = "";
@@ -22,8 +35,24 @@ public class BUser {
         this.address = "";
         this.affiliate_number = "";
         this.image = "";
+        this.dayWeek = "";
+        this.food=false;
     }
 
+    public BUser(String image, String address, String email,String affiliate_number){
+        this.image=image;
+        this.address=address;
+        this.email=email;
+        this.affiliate_number=affiliate_number;
+    }
+
+    public String getDayWeek() {
+        return dayWeek;
+    }
+
+    public boolean getFood(){
+        return food;
+    }
 
     public String getDate() {
         return date;
@@ -50,11 +79,7 @@ public class BUser {
     }
 
     public void setImage(String image) {
-        if(image.equals("")){
-            return;
-        }else{
-            this.image = image;
-        }
+        this.image = image;
     }
 
     /**
@@ -75,7 +100,7 @@ public class BUser {
             if (value.equals(sdf.format(date))) {
                 //Si sale bien, insertamos la fecha ya parseada en el string del objeto
                 v_date = true;
-                this.date = String.valueOf(date);
+                this.date = value;
             }
         } catch (ParseException ex) {
             ex.printStackTrace();
@@ -152,4 +177,28 @@ public class BUser {
         }
         return v_affiliate_number;
     }
+
+    public boolean setDayWeek(String dayWeek) {
+        boolean v_setDayWeek=false;
+        this.dayWeek = dayWeek;
+        v_setDayWeek=true;
+        return v_setDayWeek;
+    }
+
+    public void setFood(boolean food){
+        this.food=food;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        boolean result=false;
+        if(obj!=null && obj instanceof BUser){
+            BUser other=(BUser) obj;
+            if(affiliate_number.equals(other.getAffiliate_number())){
+                result=true;
+            }
+        }
+        return result;
+    }
+
 }

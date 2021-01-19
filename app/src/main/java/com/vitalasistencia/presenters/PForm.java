@@ -11,6 +11,8 @@ import androidx.core.content.ContextCompat;
 
 import com.vitalasistencia.R;
 import com.vitalasistencia.interfaces.IForm;
+import com.vitalasistencia.models.BUser;
+import com.vitalasistencia.models.MUser;
 import com.vitalasistencia.views.MyApp;
 
 public class PForm implements IForm.Presenter {
@@ -18,14 +20,26 @@ public class PForm implements IForm.Presenter {
     String TAG = "Vital_Asistencia/PForm";
     private IForm.View view;
     final private int CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 123;
+    private MUser MUser;
     public PForm(IForm.View view) {
         this.view = view;
+        MUser = new MUser();
     }
 
     @Override
-    public void onClickSaveButton() {
+    public void onClickSaveButton(BUser user) {
         Log.d(TAG, "Save Button Clicked");
-        view.saveUser();
+        try{
+            if(MUser.insertUser(user)){
+                view.showMessageForm(0);
+                view.saveUser();
+            }else{
+                //Codigo 5 es mostrar un error en numero de afiliado
+                view.showMessageForm(6);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String getError(String error_code) {
@@ -46,8 +60,17 @@ public class PForm implements IForm.Presenter {
             case "Not valid affiliate":
                 error_msg = MyApp.getContext().getResources().getString(R.string.affiliate_not_valid);
                 break;
+            case "User cannot be Inserted":
+                error_msg = MyApp.getContext().getResources().getString(R.string.user_Inserted_Rejected);
+                break;
+            case "Unfilled Field":
+                error_msg = MyApp.getContext().getResources().getString(R.string.unfilled_field);
+                break;
             case "Valid":
                 error_msg = "";
+                break;
+            case "Error":
+                error_msg = MyApp.getContext().getResources().getString(R.string.unknow_Error);
                 break;
             default:
                 error_msg = "";
