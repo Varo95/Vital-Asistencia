@@ -63,7 +63,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     private TextInputLayout affiliateLayout;
     private TextInputEditText affiliateEditText;
     private ArrayList<String> letra = null;
-    private Spinner s = null;
+    private Spinner dayWeek = null;
     private ArrayAdapter<String> adapter;
     private Button buttonDate;
     private Calendar calendar;
@@ -148,19 +148,14 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         letra = new ArrayList<String>();
         letra.addAll(presenter.getSpinner());
         Collections.sort(letra);
-        /*letra.add("Lunes");
-        letra.add("Martes");
-        letra.add("Miercoles");
-        letra.add("Jueves");
-        letra.add("Viernes");*/
 
         //Creamos el adaptador
         adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, letra);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
         //Creamos el spinner y le inyectamos los valores del adaptador
-        s = (Spinner) findViewById(R.id.spinner_Form);
-        s.setAdapter(adapter);
+        dayWeek = (Spinner) findViewById(R.id.spinner_Form);
+        dayWeek.setAdapter(adapter);
 
 
         //Boton añadir del spinner
@@ -372,7 +367,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                 if (result != null) {
                     user.setImage(result);
                 }
-                user.setDayWeek(s.getSelectedItem().toString());
+                user.setDayWeek(dayWeek.getSelectedItem().toString());
                 user.setFood(prepareFood.isChecked());
                 //Comprobamos que los campos no están vacíos antes de validarlos
                 if(dateEditText.getText().toString().equals("")){
@@ -541,7 +536,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                                     dialogBox.cancel();
                                 } else {
                                     adapter.add(dialogInput.getText().toString());
-                                    s.setSelection(adapter.getPosition(dialogInput.getText().toString()));
+                                    dayWeek.setSelection(adapter.getPosition(dialogInput.getText().toString()));
                                 }
                             }
                         })

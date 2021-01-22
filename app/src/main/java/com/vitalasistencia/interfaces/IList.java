@@ -22,5 +22,6 @@ public interface IList {
         void onClickSwipeDelete(int pos, BUser user);
         int getAndroidVersion();
         ArrayList<BUser> getAllUsers();
+        void tenUsersForFirstTime();
     }
 }

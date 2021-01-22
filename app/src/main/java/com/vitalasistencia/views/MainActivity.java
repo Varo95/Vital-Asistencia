@@ -3,6 +3,7 @@ package com.vitalasistencia.views;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -63,6 +64,13 @@ public class MainActivity extends AppCompatActivity implements IList.View {
             System.out.println("Hubo un error en la carga de OnCreate");
         }
         super.onCreate(savedInstanceState);
+        SharedPreferences is_first_time = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        if(!is_first_time.getBoolean("firstTime",false)){
+            presenter.tenUsersForFirstTime();
+            SharedPreferences.Editor editor = is_first_time.edit();
+            editor.putBoolean("firstTime", true);
+            editor.commit();
+        }
         Log.d(TAG, "Starting Layout");
         setContentView(R.layout.activity_main);
         items = new ArrayList<>();
@@ -158,9 +166,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
         super.onResume();
         int first_size=items.size();
         items.removeAll(presenter.getAllUsers());
-        System.out.println("On Resume: items "+items.size());
         items.addAll(presenter.getAllUsers());
-        System.out.println("On Resume: Items after "+items.size());
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_List);
         // Muestra el RecyclerView en vertical
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
