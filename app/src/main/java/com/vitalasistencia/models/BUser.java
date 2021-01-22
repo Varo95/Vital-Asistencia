@@ -201,4 +201,16 @@ public class BUser extends RealmObject {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "BUser{" +
+                "date='" + date + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", affiliate_number='" + affiliate_number + '\'' +
+                ", dayWeek='" + dayWeek + '\'' +
+                ", food=" + food +
+                '}';
+    }
 }

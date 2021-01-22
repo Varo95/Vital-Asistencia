@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     private ArrayList<BUser> items;
     private UserAdapter adapter;
     private TextView nUsers;
-
+    //Quitar el recibir usuarios en el oncreate de la base de datos
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements IList.View {
         Log.d(TAG, "Starting Layout");
         setContentView(R.layout.activity_main);
         items = new ArrayList<>();
-        items.addAll(presenter.getAllUsers());
 
         Log.d(TAG, "Starting Toolbar");
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -83,33 +82,6 @@ public class MainActivity extends AppCompatActivity implements IList.View {
 
         // Inicializa el RecyclerView
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_List);
-
-        // Crea el Adaptador con los datos de la lista anterior
-        adapter = new UserAdapter(items);
-
-
-        // Asocia el elemento de la lista con una acción al ser pulsado
-        adapter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Acción al pulsar el elemento
-                int position = recyclerView.getChildAdapterPosition(v);
-                presenter.onClickReciclerViewItem(items.get(position).getAffiliate_number());
-            }
-        });
-
-
-        // Asocia el Adaptador al RecyclerView
-        recyclerView.setAdapter(adapter);
-
-        // Muestra el RecyclerView en vertical
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        //Actualizamos el texto del textview
-        nUsers = (TextView) findViewById(R.id.textView_User_List);
-        String text=nUsers.getText().toString();
-        String text1=text.replace("x",""+items.size());
-        nUsers.setText(text1);
 
         SwipeHelper swipeHelper = new SwipeHelper(this, recyclerView, 200) {
 
@@ -139,7 +111,12 @@ public class MainActivity extends AppCompatActivity implements IList.View {
                 }));
             }
         };
+        nUsers = (TextView) findViewById(R.id.textView_User_List);
+        String text=nUsers.getText().toString();
+        String text1=text.replace("x",""+items.size());
+        nUsers.setText(text1);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -180,9 +157,13 @@ public class MainActivity extends AppCompatActivity implements IList.View {
         Log.d(TAG, "Starting onResume");
         super.onResume();
         int first_size=items.size();
-        items = new ArrayList<>();
+        items.removeAll(presenter.getAllUsers());
+        System.out.println("On Resume: items "+items.size());
         items.addAll(presenter.getAllUsers());
+        System.out.println("On Resume: Items after "+items.size());
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_List);
+        // Muestra el RecyclerView en vertical
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Crea el Adaptador con los datos de la lista anterior
         adapter = new UserAdapter(items);

@@ -44,6 +44,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 public class FormActivity extends AppCompatActivity implements IForm.View {
 
@@ -145,11 +146,13 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
 
         //Declaramos el arrayList del Spinner
         letra = new ArrayList<String>();
-        letra.add("Lunes");
+        letra.addAll(presenter.getSpinner());
+        Collections.sort(letra);
+        /*letra.add("Lunes");
         letra.add("Martes");
         letra.add("Miercoles");
         letra.add("Jueves");
-        letra.add("Viernes");
+        letra.add("Viernes");*/
 
         //Creamos el adaptador
         adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, letra);
@@ -350,7 +353,6 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "Calling presenter.ClickSaveButton");
-                int code=0;
                 //Intentamos pasar la imagen a base64
                 String result = null;
                 try {
@@ -370,18 +372,32 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                 if (result != null) {
                     user.setImage(result);
                 }
+                user.setDayWeek(s.getSelectedItem().toString());
                 user.setFood(prepareFood.isChecked());
-                if(!user.setDate("dd/MM/yyyy" ,dateEditText.getText().toString())){
-                    code=1;
+                //Comprobamos que los campos no están vacíos antes de validarlos
+                if(dateEditText.getText().toString().equals("")){
+                    showMessageForm(1);
+                }else if(phoneEditText.getText().toString().equals("")){
+                    showMessageForm(2);
+                }else if(emailEditText.getText().toString().equals("")){
+                    showMessageForm(3);
+                }else if(addressEditText.getText().toString().equals("")){
+                    showMessageForm(4);
+                }else if(affiliateEditText.getText().toString().equals("")){
+                    showMessageForm(5);
+                }
+                //Comprobamos que los datos son correctos
+                else if(!user.setDate("dd/MM/yyyy" ,dateEditText.getText().toString())){
+                    dateLayout.setError(presenter.getError("Not valid date"));
                 }else if(!(user.setPhone(phoneEditText.getText().toString()))){
-                    code=2;
+                    phoneLayout.setError(presenter.getError("Not valid phone"));
                 }else if(!(user.setEmail(emailEditText.getText().toString()))){
-                    code=3;
+                    emailLayout.setError(presenter.getError("Not valid email"));
                 }else if(!(user.setAddress(addressEditText.getText().toString()))){
-                    code=4;
+                    addressLayout.setError(presenter.getError("Not valid address"));
                 }else if(!(user.setAffiliate_number(affiliateEditText.getText().toString()))){
-                    code=5;
-                }else if(code==0){
+                    affiliateEditText.setError(presenter.getError("Not valid affiliate"));
+                }else{
                     presenter.onClickSaveButton(user);
                 }
             }

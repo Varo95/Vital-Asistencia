@@ -15,6 +15,8 @@ import com.vitalasistencia.models.BUser;
 import com.vitalasistencia.models.MUser;
 import com.vitalasistencia.views.MyApp;
 
+import java.util.ArrayList;
+
 public class PForm implements IForm.Presenter {
 
     String TAG = "Vital_Asistencia/PForm";
@@ -34,7 +36,7 @@ public class PForm implements IForm.Presenter {
                 view.showMessageForm(0);
                 view.saveUser();
             }else{
-                //Codigo 5 es mostrar un error en numero de afiliado
+                //Codigo 6 es mostrar un error en numero de afiliado
                 view.showMessageForm(6);
             }
         }catch(Exception e) {
@@ -139,6 +141,11 @@ public class PForm implements IForm.Presenter {
     @Override
     public void onClickResetForm() {
         view.resetForm();
+    }
+
+    @Override
+    public ArrayList getSpinner() {
+        return MUser.getSpinner();
     }
 
 }

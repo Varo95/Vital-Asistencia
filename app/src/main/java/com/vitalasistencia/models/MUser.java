@@ -1,5 +1,8 @@
 package com.vitalasistencia.models;
 
+import android.util.Log;
+import android.widget.ArrayAdapter;
+
 import java.util.ArrayList;
 
 import io.realm.Realm;
@@ -139,9 +142,31 @@ public class MUser {
             realm.close();
         }
         //Actualizamos los usuarios creando uno nuevo para cada uno, para que contenga menos datos
+        int i=0;
         for(BUser user:result){
-            int i=0;
             result.set(i++,new BUser(user.getImage(),user.getAddress(),user.getEmail(),user.getAffiliate_number()));
+        }
+        return result;
+    }
+
+    public ArrayList<String> getSpinner(){
+        ArrayList<String> result=new ArrayList<>();
+        ArrayList<BUser> listUser=new ArrayList<>();
+        Realm realm = Realm.getDefaultInstance();
+        try{
+            realm.beginTransaction();
+            RealmResults<BUser> resultrealm=realm.where(BUser.class).distinct("dayWeek").findAll();
+            listUser.addAll(realm.copyFromRealm(resultrealm));
+            realm.commitTransaction();
+            realm.close();
+        }catch (Exception e){
+            e.printStackTrace();
+            realm.close();
+        }
+        for(BUser a:listUser){
+            if(a.getDayWeek()!=null){
+                result.add(a.getDayWeek());
+            }
         }
         return result;
     }

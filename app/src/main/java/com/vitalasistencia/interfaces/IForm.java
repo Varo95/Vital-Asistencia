@@ -4,6 +4,8 @@ import android.app.Activity;
 
 import com.vitalasistencia.models.BUser;
 
+import java.util.ArrayList;
+
 public interface IForm {
     public interface Presenter {
         void onClickSaveButton(BUser user);
@@ -16,6 +18,7 @@ public interface IForm {
         void acceptedPermission();
         void deniedPermission();
         void onClickResetForm();
+        ArrayList getSpinner();
     }
 
     public interface View {
