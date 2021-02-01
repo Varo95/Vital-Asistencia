@@ -23,13 +23,13 @@
                 android:layout_marginStart="95dp"
                 android:layout_marginTop="68dp"
                 android:layout_marginEnd="11dp"
-                app:layout_constraintEnd_toStartOf="@+id/search_text"
+                app:layout_constraintEnd_toStartOf="@+id/search_text_layout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/search_user" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/search_text"
+                android:id="@+id/search_text_layout"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
@@ -40,6 +40,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/search_tei"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/user_name" />
@@ -54,7 +55,7 @@
                 android:layout_marginEnd="182dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/image_spinner_Search"
-                app:layout_constraintTop_toBottomOf="@+id/search_text" />
+                app:layout_constraintTop_toBottomOf="@+id/search_text_layout" />
 
             <ImageView
                 android:id="@+id/image_spinner_Search"
@@ -65,7 +66,7 @@
                 android:layout_marginEnd="23dp"
                 app:layout_constraintEnd_toStartOf="@+id/spinner_search"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/search_text"
+                app:layout_constraintTop_toBottomOf="@+id/search_text_layout"
                 app:srcCompat="@drawable/search_per" />
 
             <TextView
@@ -100,7 +101,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/datePicker_Search" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/search_date_text"
+                android:id="@+id/search_date_layout"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="19dp"
@@ -111,7 +112,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/TEI_date_search"
+                    android:id="@+id/date_search_tei"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/date" />

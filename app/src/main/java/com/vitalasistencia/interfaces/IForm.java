@@ -13,16 +13,17 @@ public interface IForm {
         void onClickAddSpinner();
         void onClickCancelButton();
         void onClickImage(Activity activity);
-        void onClickAcceptDeleteButton();
+        void onClickAcceptDeleteButton(String id);
         void resetImage();
         void acceptedPermission();
         void deniedPermission();
         void onClickResetForm();
         ArrayList getSpinner();
+        BUser getUser(String id);
     }
 
     public interface View {
-        void saveUser();
+        void endActivity();
         void onClickAddSpinner();
         void deleteUser();
         void showRequestPermission(int n);

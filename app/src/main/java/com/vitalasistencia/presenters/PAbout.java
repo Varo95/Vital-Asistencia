@@ -1,5 +1,6 @@
 package com.vitalasistencia.presenters;
 
+import com.vitalasistencia.BuildConfig;
 import com.vitalasistencia.interfaces.IAbout;
 
 public class PAbout implements IAbout.Presenter {
@@ -10,5 +11,10 @@ public class PAbout implements IAbout.Presenter {
 
     public PAbout(IAbout.View view) {
         this.view = view;
+    }
+
+    @Override
+    public String getappversion() {
+        return BuildConfig.VERSION_NAME;
     }
 }

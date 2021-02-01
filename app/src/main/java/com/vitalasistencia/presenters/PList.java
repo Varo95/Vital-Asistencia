@@ -82,8 +82,7 @@ public class PList implements IList.Presenter {
 
     @Override
     public int getAndroidVersion() {
-        int result = (int) Build.VERSION.SDK_INT;
-        return result;
+        return (int) Build.VERSION.SDK_INT;
     }
 
     @Override

@@ -32,9 +32,12 @@ public class PForm implements IForm.Presenter {
     public void onClickSaveButton(BUser user) {
         Log.d(TAG, "Save Button Clicked");
         try{
-            if(MUser.insertUser(user)){
+            if(MUser.insertUser(user)) {
                 view.showMessageForm(0);
-                view.saveUser();
+                view.endActivity();
+            }else if(MUser.existUser(user.getAffiliate_number()) && MUser.updateUser(user)){
+                view.showMessageForm(7);
+                view.endActivity();
             }else{
                 //Codigo 6 es mostrar un error en numero de afiliado
                 view.showMessageForm(6);
@@ -117,10 +120,9 @@ public class PForm implements IForm.Presenter {
 
 
     @Override
-    public void onClickAcceptDeleteButton() {
-        //En un futuro esto debería cambiarse para que borrase al usuario de la lista
-        //de momento llama a este método de la vista porque es un método el cual me devuelve a la actividad anterior
-        view.saveUser();
+    public void onClickAcceptDeleteButton(String id) {
+        MUser.removeUser(id);
+        view.endActivity();
     }
 
     @Override
@@ -146,6 +148,11 @@ public class PForm implements IForm.Presenter {
     @Override
     public ArrayList getSpinner() {
         return MUser.getSpinner();
+    }
+
+    @Override
+    public BUser getUser(String id) {
+        return MUser.searchUser(id);
     }
 
 }

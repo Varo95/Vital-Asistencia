@@ -2,6 +2,7 @@
 <resources>
     <string name="cancel">Cancelar</string>
     <string name="save">Guardar</string>
+    <!-- Do NOT delete "x" on next String -->
     <string name="User_List">Tienes x usuarios</string>
     <string name="New_User">Nuevo Usuario</string>
     <string name="food">Preparar comida</string>
@@ -53,4 +54,5 @@
     <string name="user_Inserted_Accepted">Usuario insertado correctamente</string>
     <string name="unknow_Error">Error desconocido</string>
     <string name="unfilled_field">Este campo debe ser rellenado</string>
+    <string name="user_Updated">Usuario actualizado!</string>
 </resources>

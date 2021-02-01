@@ -36,20 +36,18 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     private ArrayList<BUser> items;
     private UserAdapter adapter;
     private TextView nUsers;
-    //Quitar el recibir usuarios en el oncreate de la base de datos
+    private final int SEARCH=0;
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "Starting onCreate");
-        //Este código lo he puesto porque el splash me crasheaba en Android 5.0 con la pantalla en
-        //horizontal, se cerraba la app si ya la tenía iniciada y si la iniciaba en horizontal
-        //provocaba el reinicio del dispositivo
-        //PD: Debería de haberte hecho caso con el splash, pues era el problema >.<"
         myContext = this;
         presenter = new PList(this);
         int a_version = presenter.getAndroidVersion();
         //Este número coincide con el código de la version Android 6.0
         final int limit_version = 23;
+        //Cargamos un tema u otro dependiendo de la version de android, si es inferior a 6
+        //mostramos uno sin imagen vectorial.
         if (a_version >= limit_version) {
             setTheme(R.style.Theme_VitalAsistencia_List);
         } else {
@@ -60,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements IList.View {
             //dependería de la rapidez del móvil el tiempo del splash (más lento, más duraría)
             Thread.sleep(2000);
         } catch (InterruptedException e) {
-            //e.printStackTrace();
             System.out.println("Hubo un error en la carga de OnCreate");
         }
         super.onCreate(savedInstanceState);
@@ -119,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
                 }));
             }
         };
+        //Reemplazamos el textview y actualizamos la X en el String
         nUsers = (TextView) findViewById(R.id.textView_User_List);
         String text=nUsers.getText().toString();
         String text1=text.replace("x",""+items.size());
@@ -164,8 +162,9 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     protected void onResume() {
         Log.d(TAG, "Starting onResume");
         super.onResume();
-        int first_size=items.size();
-        items.removeAll(presenter.getAllUsers());
+
+        //items.removeAll(presenter.getAllUsers());
+        items.clear();
         items.addAll(presenter.getAllUsers());
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_List);
         // Muestra el RecyclerView en vertical
@@ -185,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
         //Actualizamos el textview de los elementos
         nUsers = (TextView) findViewById(R.id.textView_User_List);
         String text=nUsers.getText().toString();
+        int first_size=items.size();
         String text1=text.replace(""+first_size,""+items.size());
         nUsers.setText(text1);
     }
@@ -224,7 +224,28 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     public void startSearchActivity() {
         Log.d(TAG, "Starting Search Activity");
         Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent,SEARCH);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Comprobamos si el resultado de la segunda actividad es "RESULT_CANCELED".
+        if (resultCode == RESULT_OK) {
+            String resultado = data.getExtras().getString("RESULTADO");
+        } else {
+            Toast.makeText(this, "Resultado cancelado", Toast.LENGTH_SHORT)
+                    .show();
+            // Y tratamos el resultado en función de si se lanzó para rellenar el
+            // nombre o el apellido.
+            /*switch (requestCode) {
+                case NOMBRE:
+                    etNombre.setText(resultado);
+                    break;
+                case APELLIDO:
+                    etApellido.setText(resultado);
+                    break;
+            }*/
+        }
     }
 
     @Override
