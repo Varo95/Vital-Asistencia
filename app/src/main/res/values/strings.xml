@@ -60,5 +60,9 @@
     <string name="unknow_Error">Unknow Error</string>
     <string name="unfilled_field">This field must be filled</string>
     <string name="user_Updated">User was updated!</string>
+    <string name="weekday_spinner">--Select or add Weekday--</string>
+    <string name="accept">Okey</string>
+    <string name="search_user_dialog_message">You have not entered any search parameters! Please refill at least once</string>
+    <string name="search_caceled">Searched was canceled</string>
 
 </resources>

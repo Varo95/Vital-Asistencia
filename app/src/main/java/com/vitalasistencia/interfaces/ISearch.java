@@ -10,5 +10,6 @@ public interface ISearch {
 
     public interface View {
         void SearchButton();
+        void showMessageSearch();
     }
 }

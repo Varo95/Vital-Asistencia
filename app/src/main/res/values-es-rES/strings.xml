@@ -55,4 +55,8 @@
     <string name="unknow_Error">Error desconocido</string>
     <string name="unfilled_field">Este campo debe ser rellenado</string>
     <string name="user_Updated">Usuario actualizado!</string>
+    <string name="weekday_spinner">--Selecciona o añade dia de semana--</string>
+    <string name="accept">Aceptar</string>
+    <string name="search_user_dialog_message">No has introducido ningun parametro de busqueda! Porfavor rellena algún campo</string>
+    <string name="search_caceled">Busqueda cancelada</string>
 </resources>

@@ -23,5 +23,6 @@ public interface IList {
         int getAndroidVersion();
         ArrayList<BUser> getAllUsers();
         void tenUsersForFirstTime();
+        ArrayList<BUser> getQuery(String address, String dayWeek, String date);
     }
 }

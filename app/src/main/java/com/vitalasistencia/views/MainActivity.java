@@ -36,7 +36,10 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     private ArrayList<BUser> items;
     private UserAdapter adapter;
     private TextView nUsers;
-    private final int SEARCH=0;
+    private final int SEARCH = 0;
+    private RecyclerView recyclerView;
+    private boolean isFiltered = false;
+
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
         }
         super.onCreate(savedInstanceState);
         SharedPreferences is_first_time = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        if(!is_first_time.getBoolean("firstTime",false)){
+        if (!is_first_time.getBoolean("firstTime", false)) {
             presenter.tenUsersForFirstTime();
             SharedPreferences.Editor editor = is_first_time.edit();
             editor.putBoolean("firstTime", true);
@@ -85,8 +88,22 @@ public class MainActivity extends AppCompatActivity implements IList.View {
             }
         });
 
-        // Inicializa el RecyclerView
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_List);
+        // Localizamos el reciclerview para cargar el adaptador dentro de él
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_List);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Crea el Adaptador con los datos de la lista anterior
+        adapter = new UserAdapter(items);
+        adapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Acción al pulsar el elemento
+                int position = recyclerView.getChildAdapterPosition(v);
+                presenter.onClickReciclerViewItem(items.get(position).getAffiliate_number());
+            }
+        });
+        recyclerView.setAdapter(adapter);
 
         SwipeHelper swipeHelper = new SwipeHelper(this, recyclerView, 200) {
 
@@ -118,8 +135,8 @@ public class MainActivity extends AppCompatActivity implements IList.View {
         };
         //Reemplazamos el textview y actualizamos la X en el String
         nUsers = (TextView) findViewById(R.id.textView_User_List);
-        String text=nUsers.getText().toString();
-        String text1=text.replace("x",""+items.size());
+        String text = nUsers.getText().toString();
+        String text1 = text.replace("x", "" + items.size());
         nUsers.setText(text1);
     }
 
@@ -148,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
         if (id == R.id.action_about) {
             Log.d(TAG, "Menu About click");
             presenter.onClickAboutButton();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -162,30 +180,17 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     protected void onResume() {
         Log.d(TAG, "Starting onResume");
         super.onResume();
-
-        //items.removeAll(presenter.getAllUsers());
-        items.clear();
-        items.addAll(presenter.getAllUsers());
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_List);
-        // Muestra el RecyclerView en vertical
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Crea el Adaptador con los datos de la lista anterior
-        adapter = new UserAdapter(items);
-        adapter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Acción al pulsar el elemento
-                int position = recyclerView.getChildAdapterPosition(v);
-                presenter.onClickReciclerViewItem(items.get(position).getAffiliate_number());
-            }
-        });
-        recyclerView.setAdapter(adapter);
+        //Este numero es para controlar en el onCreate y en el onResume, pues declarándolo solo en
+        //el onResume no me sustituía bien el número cuando creaba un nuevo usuario.
+        int sizeOnCreate = items.size();
+        if (!isFiltered) {
+            items.clear();
+            items.addAll(presenter.getAllUsers());
+            adapter.notifyDataSetChanged();
+        }
         //Actualizamos el textview de los elementos
-        nUsers = (TextView) findViewById(R.id.textView_User_List);
-        String text=nUsers.getText().toString();
-        int first_size=items.size();
-        String text1=text.replace(""+first_size,""+items.size());
+        String text = nUsers.getText().toString();
+        String text1 = text.replace("" + sizeOnCreate, "" + items.size());
         nUsers.setText(text1);
     }
 
@@ -224,27 +229,36 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     public void startSearchActivity() {
         Log.d(TAG, "Starting Search Activity");
         Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-        startActivityForResult(intent,SEARCH);
+        startActivityForResult(intent, SEARCH);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "Starting Activity from Search");
         super.onActivityResult(requestCode, resultCode, data);
-        // Comprobamos si el resultado de la segunda actividad es "RESULT_CANCELED".
+        // Comprobamos si el resultado de la segunda actividad es "RESULT_OK".
+        String temp = "";
+        int sizeOnResume = items.size();
+        items.clear();
+        ArrayList<BUser> searched = new ArrayList<BUser>();
+
         if (resultCode == RESULT_OK) {
-            String resultado = data.getExtras().getString("RESULTADO");
+            String address = null, dayWeek = null, date = null;
+            if (data.getStringExtra("ADDRESS") != null) address = data.getStringExtra("ADDRESS");
+            if (data.getStringExtra("DAYWEEK") != null) dayWeek = data.getStringExtra("DAYWEEK");
+            if (data.getStringExtra("DATE") != null) date = data.getStringExtra("DATE");
+            if ((address != null && !(address.isEmpty())) || (dayWeek != null && !(dayWeek.isEmpty())) || (date != null && !(date.isEmpty()))) {
+                searched.addAll(presenter.getQuery(address, dayWeek, date));
+            }
+            items.addAll(searched);
+            adapter.notifyDataSetChanged();
+            //Actualizamos el textview de los elementos
+            String text = nUsers.getText().toString();
+            String text1 = text.replace("" + sizeOnResume, "" + items.size());
+            nUsers.setText(text1);
+            isFiltered = true;
         } else {
-            Toast.makeText(this, "Resultado cancelado", Toast.LENGTH_SHORT)
-                    .show();
-            // Y tratamos el resultado en función de si se lanzó para rellenar el
-            // nombre o el apellido.
-            /*switch (requestCode) {
-                case NOMBRE:
-                    etNombre.setText(resultado);
-                    break;
-                case APELLIDO:
-                    etApellido.setText(resultado);
-                    break;
-            }*/
+            Toast.makeText(this, R.string.search_caceled, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -266,8 +280,8 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     @Override
     public void deleteUser(int pos) {
         nUsers = (TextView) findViewById(R.id.textView_User_List);
-        String text=nUsers.getText().toString();
-        String text1=text.replace(""+items.size(),""+(items.size()-1));
+        String text = nUsers.getText().toString();
+        String text1 = text.replace("" + items.size(), "" + (items.size() - 1));
         nUsers.setText(text1);
         items.remove(pos);
         adapter.notifyItemRemoved(pos);

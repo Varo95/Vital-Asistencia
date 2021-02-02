@@ -111,11 +111,13 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         Log.d(TAG, "Get String");
 
         if (id != null) {
-            //set text noseque id
+            //Cargamos el usuario a partir de su ID
             user=presenter.getUser(id);
         } else {
-            //Cambia el booleano para usarlo en otras funciones
+            //Cambiamos un boleano para diferenciar en otras partes del código si estamos creando
+            //o actualizando un usuario
             creatinguser = true;
+            //Y creamos un usuario nuevo que es el que insertaremos posteriormente
             user=new BUser();
         }
         //Creamos el puntero hacia el imageview del formulario
@@ -160,8 +162,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         ArrayDayWeek = new ArrayList<String>();
         ArrayDayWeek.addAll(presenter.getSpinner());
         ArrayDayWeek.remove("");
-
-        Collections.sort(ArrayDayWeek);
+        ArrayDayWeek.add(MyApp.getContext().getString(R.string.weekday_spinner));
 
         //Creamos el adaptador
         adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, ArrayDayWeek);
@@ -170,6 +171,9 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         //Creamos el spinner y le inyectamos los valores del adaptador
         dayWeek = (Spinner) findViewById(R.id.spinner_Form);
         dayWeek.setAdapter(adapter);
+        int indexOfDW=ArrayDayWeek.indexOf(MyApp.getContext().getString(R.string.weekday_spinner));
+        //Valor por defecto del Spinner
+        dayWeek.setSelection(indexOfDW);
 
 
         //Boton añadir del spinner
@@ -372,7 +376,11 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                 if (result != null) {
                     finalUser.setImage(result);
                 }
-                finalUser.setDayWeek(dayWeek.getSelectedItem().toString());
+                if(!(dayWeek.getSelectedItem().equals(MyApp.getContext().getString(R.string.weekday_spinner)))){
+                    finalUser.setDayWeek(dayWeek.getSelectedItem().toString());
+                }else{
+                    finalUser.setDayWeek("");
+                }
                 finalUser.setFood(prepareFood.isChecked());
                 //Comprobamos que los campos no están vacíos antes de validarlos
                 if(dateEditText.getText().toString().equals("")){
@@ -409,7 +417,6 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                 byte[] decodedString = Base64.decode(user.getImage(), Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 imageView_Form.setImageBitmap(decodedByte);
-                //...quita la imagen de fondo
                 imageView_Form.setBackground(null);
                 }
             } catch (Exception e) {

@@ -1,7 +1,9 @@
 package com.vitalasistencia.views;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,10 +37,10 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
     private TextInputEditText dateEditText;
     private TextInputLayout addressLayout;
     private TextInputEditText addressEditText;
+    private Spinner spinner;
     private DatePickerDialog datePickerDialog;
     private int Year, Month, Day;
 
-    //Calle, Spinner y fecha
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,22 +68,26 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
         presenter = new PSearch(this);
 
         addressLayout = findViewById(R.id.search_text_layout);
-        addressEditText = findViewById(R.id.date_search_tei);
+        addressEditText = findViewById(R.id.search_tei);
 
         calendar = Calendar.getInstance();
         Year = calendar.get(Calendar.YEAR);
         Month = calendar.get(Calendar.MONTH);
         Day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinner_search);
-        ArrayList<String> letra = new ArrayList<String>();
-        letra.addAll(presenter.getSpinner());
-        Collections.sort(letra);
-        spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, letra));
+        spinner = (Spinner) findViewById(R.id.spinner_search);
+        ArrayList<String> dayWeek = new ArrayList<String>();
+        dayWeek.addAll(presenter.getSpinner());
+        dayWeek.remove("");
+        dayWeek.add(MyApp.getContext().getString(R.string.weekday_spinner));
+        spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, dayWeek));
+        int indexOfDW = dayWeek.indexOf(MyApp.getContext().getString(R.string.weekday_spinner));
+        //Valor por defecto del Spinner
+        spinner.setSelection(indexOfDW);
 
         //Creamos punteros para el textedit de la fecha
         dateEditText = findViewById(R.id.date_search_tei);
-        //Para que el usuario no pueda cambiar la fecha
+        //Para que el usuario no pueda cambiar la fecha manualmente
         dateEditText.setEnabled(false);
 
         buttonDate = (Button) findViewById(R.id.datePicker_Search);
@@ -171,15 +177,77 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
     @Override
     public void SearchButton() {
         Log.d(TAG, "SearchButton Clicked");
-        if (addressEditText.getText().length() != 0) {
-            String resultado = addressEditText.getText().toString();
-            Intent i = getIntent();
-            i.putExtra("RESULTADO", resultado);
+        String temp = "";
+        Intent i = getIntent();
+        if (addressEditText.getText().length() != 0
+                || !(spinner.getSelectedItem().equals(temp) && spinner.getSelectedItem().equals(MyApp.getContext().getString(R.string.weekday_spinner)))
+                || dateEditText.getText().length() != 0) {
+            if (addressEditText.getText().length() != 0) {
+                i.putExtra("ADDRESS", addressEditText.getText().toString());
+            }
+            if (!(spinner.getSelectedItem().equals(temp) && spinner.getSelectedItem().equals(MyApp.getContext().getString(R.string.weekday_spinner)))) {
+                i.putExtra("DAYWEEK", spinner.getSelectedItem().toString());
+            }
+            if (dateEditText.getText().length() != 0) {
+                i.putExtra("DATE", dateEditText.getText().toString());
+            }
             setResult(RESULT_OK, i);
             finish();
         } else {
-            // Si no tenía nada escrito el EditText lo avisamos.
-            //Toast.;
-        }
+        //Si no tiene nada escrito le avisamos en el textEdit
+        showMessageSearch();
+    }
+
+        /*if (addressEditText.getText().length() != 0
+                && !(spinner.getSelectedItem().equals(temp) && spinner.getSelectedItem().equals(MyApp.getContext().getString(R.string.weekday_spinner)))
+                && dateEditText.getText().length() != 0) {
+            ArrayList<String> result = new ArrayList<String>();
+            result.add(addressEditText.getText().toString()+1);
+            result.add(spinner.getSelectedItem().toString()+2);
+            result.add(dateEditText.getText().toString()+3);
+            Intent i = getIntent();
+            i.putExtra("RESULTARRAY", result);
+            i.putExtra("RESULT")
+            setResult(RESULT_OK, i);
+            finish();
+        } else if (addressEditText.getText().length() != 0) {
+            String result = addressEditText.getText().toString()+1;
+            Intent i = getIntent();
+            i.putExtra("RESULT", result);
+            setResult(RESULT_OK, i);
+            finish();
+        } else if (!(spinner.getSelectedItem().equals(temp)) && !(spinner.getSelectedItem().equals(MyApp.getContext().getString(R.string.weekday_spinner)))) {
+            String result = spinner.getSelectedItem().toString()+2;
+            Intent i = getIntent();
+            i.putExtra("RESULT", result);
+            setResult(RESULT_OK, i);
+            finish();
+        } else if (dateEditText.getText().length() != 0) {
+            String result = dateEditText.getText().toString()+3;
+            Intent i = getIntent();
+            i.putExtra("RESULT", result);
+            setResult(RESULT_OK, i);
+            finish();
+        } else {
+            //Si no tiene nada escrito le avisamos en el textEdit
+            showMessageSearch();
+        }*/
+    }
+
+    @Override
+    public void showMessageSearch() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
+        builder.setTitle(R.string.delete_user_dialog_tittle);
+        builder.setMessage(R.string.search_user_dialog_message);
+
+        //Accept Button
+        builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
