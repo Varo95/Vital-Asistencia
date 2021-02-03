@@ -179,13 +179,14 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
         Log.d(TAG, "SearchButton Clicked");
         String temp = "";
         Intent i = getIntent();
-        if (addressEditText.getText().length() != 0
-                || !(spinner.getSelectedItem().equals(temp) && spinner.getSelectedItem().equals(MyApp.getContext().getString(R.string.weekday_spinner)))
-                || dateEditText.getText().length() != 0) {
-            if (addressEditText.getText().length() != 0) {
+        String def_valueOfSpinner = getResources().getString(R.string.weekday_spinner);
+        if (addressEditText.getText().length() > 0
+                || (!(spinner.getSelectedItem().equals(temp)) && !(spinner.getSelectedItem().toString().equals(def_valueOfSpinner)))
+                || !(dateEditText.getText().toString().equals(temp))) {
+            if (addressEditText.getText().length() > 0) {
                 i.putExtra("ADDRESS", addressEditText.getText().toString());
             }
-            if (!(spinner.getSelectedItem().equals(temp) && spinner.getSelectedItem().equals(MyApp.getContext().getString(R.string.weekday_spinner)))) {
+            if (!(spinner.getSelectedItem().equals(temp)) && !(spinner.getSelectedItem().toString().equals(def_valueOfSpinner))) {
                 i.putExtra("DAYWEEK", spinner.getSelectedItem().toString());
             }
             if (dateEditText.getText().length() != 0) {
@@ -194,60 +195,24 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
             setResult(RESULT_OK, i);
             finish();
         } else {
-        //Si no tiene nada escrito le avisamos en el textEdit
-        showMessageSearch();
-    }
-
-        /*if (addressEditText.getText().length() != 0
-                && !(spinner.getSelectedItem().equals(temp) && spinner.getSelectedItem().equals(MyApp.getContext().getString(R.string.weekday_spinner)))
-                && dateEditText.getText().length() != 0) {
-            ArrayList<String> result = new ArrayList<String>();
-            result.add(addressEditText.getText().toString()+1);
-            result.add(spinner.getSelectedItem().toString()+2);
-            result.add(dateEditText.getText().toString()+3);
-            Intent i = getIntent();
-            i.putExtra("RESULTARRAY", result);
-            i.putExtra("RESULT")
-            setResult(RESULT_OK, i);
-            finish();
-        } else if (addressEditText.getText().length() != 0) {
-            String result = addressEditText.getText().toString()+1;
-            Intent i = getIntent();
-            i.putExtra("RESULT", result);
-            setResult(RESULT_OK, i);
-            finish();
-        } else if (!(spinner.getSelectedItem().equals(temp)) && !(spinner.getSelectedItem().equals(MyApp.getContext().getString(R.string.weekday_spinner)))) {
-            String result = spinner.getSelectedItem().toString()+2;
-            Intent i = getIntent();
-            i.putExtra("RESULT", result);
-            setResult(RESULT_OK, i);
-            finish();
-        } else if (dateEditText.getText().length() != 0) {
-            String result = dateEditText.getText().toString()+3;
-            Intent i = getIntent();
-            i.putExtra("RESULT", result);
-            setResult(RESULT_OK, i);
-            finish();
-        } else {
-            //Si no tiene nada escrito le avisamos en el textEdit
             showMessageSearch();
-        }*/
+        }
     }
 
-    @Override
-    public void showMessageSearch() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
-        builder.setTitle(R.string.delete_user_dialog_tittle);
-        builder.setMessage(R.string.search_user_dialog_message);
+        @Override
+        public void showMessageSearch () {
+            AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
+            builder.setTitle(R.string.delete_user_dialog_tittle);
+            builder.setMessage(R.string.search_user_dialog_message);
 
-        //Accept Button
-        builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+            //Accept Button
+            builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
     }
-}

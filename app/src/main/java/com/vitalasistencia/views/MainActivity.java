@@ -5,14 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     private TextView nUsers;
     private final int SEARCH = 0;
     private RecyclerView recyclerView;
+    //Controla si estamos buscando o no para no volver a cargar el OnCreate
     private boolean isFiltered = false;
 
     @SuppressLint("ResourceType")
