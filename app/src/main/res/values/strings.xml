@@ -64,5 +64,6 @@
     <string name="accept">Okey</string>
     <string name="search_user_dialog_message">You have not entered any search parameters! Please refill at least once</string>
     <string name="search_caceled">Searched was canceled</string>
+    <string name="updating_user">Updating user</string>
 
 </resources>

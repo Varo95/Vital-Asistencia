@@ -59,4 +59,5 @@
     <string name="accept">Aceptar</string>
     <string name="search_user_dialog_message">No has introducido ningun parametro de busqueda! Porfavor rellena algún campo</string>
     <string name="search_caceled">Busqueda cancelada</string>
+    <string name="updating_user">Actualizando Usuario</string>
 </resources>

@@ -48,7 +48,7 @@ import java.util.Collections;
 
 public class FormActivity extends AppCompatActivity implements IForm.View {
 
-    private String TAG = "Vital_Asistencia/FormActivity";
+    private final String TAG = "V_A/FormActivity";
     private IForm.Presenter presenter;
     private Context myContext;
     private TextInputLayout dateLayout;
@@ -162,7 +162,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         ArrayDayWeek = new ArrayList<String>();
         ArrayDayWeek.addAll(presenter.getSpinner());
         ArrayDayWeek.remove("");
-        ArrayDayWeek.add(MyApp.getContext().getString(R.string.weekday_spinner));
+        ArrayDayWeek.add(getResources().getString(R.string.weekday_spinner));
 
         //Creamos el adaptador
         adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, ArrayDayWeek);
@@ -171,7 +171,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         //Creamos el spinner y le inyectamos los valores del adaptador
         dayWeek = (Spinner) findViewById(R.id.spinner_Form);
         dayWeek.setAdapter(adapter);
-        int indexOfDW=ArrayDayWeek.indexOf(MyApp.getContext().getString(R.string.weekday_spinner));
+        int indexOfDW=ArrayDayWeek.indexOf(getResources().getString(R.string.weekday_spinner));
         //Valor por defecto del Spinner
         dayWeek.setSelection(indexOfDW);
 
@@ -343,6 +343,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
             //Si se está creando un usuario se deshabilita el botón de Eliminar/Cancelar
             CancelButton.setEnabled(false);
         } else {
+            toolbar.setTitle(R.string.updating_user);
             CancelButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -375,6 +376,8 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                 }
                 if (result != null) {
                     finalUser.setImage(result);
+                }else{
+                    finalUser.setImage("");
                 }
                 if(!(dayWeek.getSelectedItem().equals(MyApp.getContext().getString(R.string.weekday_spinner)))){
                     finalUser.setDayWeek(dayWeek.getSelectedItem().toString());
@@ -571,7 +574,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                 .setPositiveButton(getResources().getString(R.string.add),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogBox, int id) {
-                                if ((dialogInput.getText().toString().equals(p.toString()))) {
+                                if ((dialogInput.getText().toString().equals(p))) {
                                     dialogBox.cancel();
                                 } else {
                                     adapter.add(dialogInput.getText().toString());

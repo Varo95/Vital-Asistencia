@@ -263,6 +263,9 @@ public class MainActivity extends AppCompatActivity implements IList.View {
             isFiltered = true;
         } else {
             Toast.makeText(this, R.string.search_caceled, Toast.LENGTH_SHORT).show();
+            String text = nUsers.getText().toString();
+            String text1 = text.replace("" + sizeOnResume, "" + items.size());
+            nUsers.setText(text1);
         }
     }
 
