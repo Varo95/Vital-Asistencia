@@ -1,7 +1,6 @@
 package com.vitalasistencia.models;
 
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +22,7 @@ public class MUser {
         Realm realm = Realm.getDefaultInstance();
         try {
             realm.beginTransaction();
-            if (realm.where(BUser.class).equalTo("affiliate_number", affiliate_number).findAll().size() == 0) {
-                result = false;
-            } else {
-                result = true;
-            }
+            result = realm.where(BUser.class).equalTo("affiliate_number", affiliate_number).findAll().size() != 0;
             realm.commitTransaction();
             realm.close();
         } catch (Exception e) {
@@ -65,16 +60,18 @@ public class MUser {
     public boolean updateUser(BUser user) {
         boolean valid = false;
         Realm realm = Realm.getDefaultInstance();
-        try {
-            realm.beginTransaction();
-            realm.insertOrUpdate(user);
-            realm.commitTransaction();
-            realm.close();
-            valid = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            realm.close();
-            valid = false;
+        if (user != null && existUser(user.getAffiliate_number())) {
+            try {
+                realm.beginTransaction();
+                realm.insertOrUpdate(user);
+                realm.commitTransaction();
+                realm.close();
+                valid = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                realm.close();
+                valid = false;
+            }
         }
         return valid;
     }
@@ -108,6 +105,7 @@ public class MUser {
         } catch (Exception e) {
             e.printStackTrace();
             realm.close();
+            user_read = null;
         }
         return user_read;
     }
@@ -120,7 +118,7 @@ public class MUser {
             RealmQuery<BUser> query = null;
             if (address != null || dayWeek != null || date != null) {
                 if (address != null && !address.isEmpty()) {
-                    query = realm.where(BUser.class).like("address", "*"+address+"*");
+                    query = realm.where(BUser.class).like("address", "*" + address + "*");
                 }
                 if (dayWeek != null && !dayWeek.isEmpty()) {
                     if (query == null) {
@@ -149,7 +147,7 @@ public class MUser {
         return users_read;
     }
 
-    public ArrayList<BUser> readAllUsers() {
+    /*public ArrayList<BUser> readAllUsers() {
         ArrayList<BUser> result = new ArrayList<BUser>();
         Realm realm = Realm.getDefaultInstance();
         try {
@@ -163,7 +161,7 @@ public class MUser {
             realm.close();
         }
         return result;
-    }
+    }*/
 
     /**
      * This method return a filtered BUser ArrayList, only loading the fields we need to load on MainActivity ReciclerView

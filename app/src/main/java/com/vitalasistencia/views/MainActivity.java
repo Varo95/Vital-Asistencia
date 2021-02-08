@@ -5,21 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vitalasistencia.R;
@@ -41,7 +39,8 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     private TextView nUsers;
     private final int SEARCH = 0;
     private RecyclerView recyclerView;
-    //Controla si estamos buscando o no para no volver a cargar el OnCreate
+    private SwipeRefreshLayout swipeRefresh;
+    //Controla si estamos buscando o no para no volver a cargar los items del OnResume
     private boolean isFiltered = false;
 
     @SuppressLint("ResourceType")
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
         });
 
         // Localizamos el reciclerview para cargar el adaptador dentro de él
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_List);
+        recyclerView = findViewById(R.id.recyclerView_List);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -137,8 +136,22 @@ public class MainActivity extends AppCompatActivity implements IList.View {
                 }));
             }
         };
+        swipeRefresh = findViewById(R.id.swipeRefresh);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                isFiltered = false;
+                onResume();
+                swipeRefresh.setRefreshing(false);
+            }
+        });
+        // Colores del icono refresh
+        swipeRefresh.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         //Reemplazamos el textview y actualizamos la X en el String
-        nUsers = (TextView) findViewById(R.id.textView_User_List);
+        nUsers = findViewById(R.id.textView_User_List);
         String text = nUsers.getText().toString();
         String text1 = text.replace("x", "" + items.size());
         nUsers.setText(text1);
@@ -286,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
 
     @Override
     public void deleteUser(int pos) {
-        nUsers = (TextView) findViewById(R.id.textView_User_List);
+        nUsers = findViewById(R.id.textView_User_List);
         String text = nUsers.getText().toString();
         String text1 = text.replace("" + items.size(), "" + (items.size() - 1));
         nUsers.setText(text1);

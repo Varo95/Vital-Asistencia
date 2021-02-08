@@ -44,7 +44,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 
 public class FormActivity extends AppCompatActivity implements IForm.View {
 
@@ -88,7 +87,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
 
         //Creamos el toolbar
         Log.d(TAG, "Starting Toolbar");
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -112,13 +111,13 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
 
         if (id != null) {
             //Cargamos el usuario a partir de su ID
-            user=presenter.getUser(id);
+            user = presenter.getUser(id);
         } else {
             //Cambiamos un boleano para diferenciar en otras partes del código si estamos creando
             //o actualizando un usuario
             creatinguser = true;
             //Y creamos un usuario nuevo que es el que insertaremos posteriormente
-            user=new BUser();
+            user = new BUser();
         }
         //Creamos el puntero hacia el imageview del formulario
         imageView_Form = findViewById(R.id.imageView_Form);
@@ -169,9 +168,9 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
         //Creamos el spinner y le inyectamos los valores del adaptador
-        dayWeek = (Spinner) findViewById(R.id.spinner_Form);
+        dayWeek = findViewById(R.id.spinner_Form);
         dayWeek.setAdapter(adapter);
-        int indexOfDW=ArrayDayWeek.indexOf(getResources().getString(R.string.weekday_spinner));
+        int indexOfDW = ArrayDayWeek.indexOf(getResources().getString(R.string.weekday_spinner));
         //Valor por defecto del Spinner
         dayWeek.setSelection(indexOfDW);
 
@@ -219,7 +218,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         Day = calendar.get(Calendar.DAY_OF_MONTH);
 
         //Creamos el DatePicker de fecha
-        buttonDate = (Button) findViewById(R.id.date_picker);
+        buttonDate = findViewById(R.id.date_picker);
         buttonDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -246,7 +245,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         });
 
         //Creamos punteros para el switch de preparar comida
-        prepareFood = (SwitchCompat) findViewById(R.id.switch_food_Form);
+        prepareFood = findViewById(R.id.switch_food_Form);
 
         //Creamos punteros para el textedit del telefono
         phoneEditText = findViewById(R.id.TEI_phone);
@@ -318,24 +317,28 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         affiliateEditText = findViewById(R.id.TEI_affiliate_number);
         affiliateLayout = findViewById(R.id.affiliate_number_form);
         //Hacemos una operación equivalente a la anterior pero aplicandolo al affiliate
-        affiliateEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-                    Log.d(TAG, "affiliate_text has focused");
-                    if (affiliateEditText.getText().toString().matches("")) {
-                        affiliateLayout.setError(presenter.getError("Valid"));
-                    } else if (!(finalUser.setAffiliate_number(affiliateEditText.getText().toString()))) {
-                        //No será valido si no coincide con la expresión regular de BUser.setAffiliate
-                        affiliateLayout.setError(presenter.getError("Not valid affiliate"));
+        if (!creatinguser) {
+            affiliateEditText.setEnabled(false);
+        } else {
+            affiliateEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean hasFocus) {
+                    if (!hasFocus) {
+                        Log.d(TAG, "affiliate_text has focused");
+                        if (affiliateEditText.getText().toString().matches("")) {
+                            affiliateLayout.setError(presenter.getError("Valid"));
+                        } else if (!(finalUser.setAffiliate_number(affiliateEditText.getText().toString()))) {
+                            //No será valido si no coincide con la expresión regular de BUser.setAffiliate
+                            affiliateLayout.setError(presenter.getError("Not valid affiliate"));
+                        } else {
+                            affiliateLayout.setError(presenter.getError("Valid"));
+                        }
                     } else {
-                        affiliateLayout.setError(presenter.getError("Valid"));
+                        Log.d(TAG, "affiliate_text is unfocused");
                     }
-                } else {
-                    Log.d(TAG, "affiliate_text is unfocused");
                 }
-            }
-        });
+            });
+        }
 
         //Botón eliminar o cancelar
         Button CancelButton = findViewById(R.id.Cancel_Form);
@@ -376,57 +379,57 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                 }
                 if (result != null) {
                     finalUser.setImage(result);
-                }else{
+                } else {
                     finalUser.setImage("");
                 }
-                if(!(dayWeek.getSelectedItem().equals(MyApp.getContext().getString(R.string.weekday_spinner)))){
+                if (!(dayWeek.getSelectedItem().equals(MyApp.getContext().getString(R.string.weekday_spinner)))) {
                     finalUser.setDayWeek(dayWeek.getSelectedItem().toString());
-                }else{
+                } else {
                     finalUser.setDayWeek("");
                 }
                 finalUser.setFood(prepareFood.isChecked());
                 //Comprobamos que los campos no están vacíos antes de validarlos
-                if(dateEditText.getText().toString().equals("")){
+                if (dateEditText.getText().toString().equals("")) {
                     showMessageForm(1);
-                }else if(phoneEditText.getText().toString().equals("")){
+                } else if (phoneEditText.getText().toString().equals("")) {
                     showMessageForm(2);
-                }else if(emailEditText.getText().toString().equals("")){
+                } else if (emailEditText.getText().toString().equals("")) {
                     showMessageForm(3);
-                }else if(addressEditText.getText().toString().equals("")){
+                } else if (addressEditText.getText().toString().equals("")) {
                     showMessageForm(4);
-                }else if(affiliateEditText.getText().toString().equals("")){
+                } else if (affiliateEditText.getText().toString().equals("")) {
                     showMessageForm(5);
                 }
                 //Comprobamos que los datos son correctos
-                else if(!finalUser.setDate("dd/MM/yyyy" ,dateEditText.getText().toString())){
+                else if (!finalUser.setDate("dd/MM/yyyy", dateEditText.getText().toString())) {
                     dateLayout.setError(presenter.getError("Not valid date"));
-                }else if(!(finalUser.setPhone(phoneEditText.getText().toString()))){
+                } else if (!(finalUser.setPhone(phoneEditText.getText().toString()))) {
                     phoneLayout.setError(presenter.getError("Not valid phone"));
-                }else if(!(finalUser.setEmail(emailEditText.getText().toString()))){
+                } else if (!(finalUser.setEmail(emailEditText.getText().toString()))) {
                     emailLayout.setError(presenter.getError("Not valid email"));
-                }else if(!(finalUser.setAddress(addressEditText.getText().toString()))){
+                } else if (!(finalUser.setAddress(addressEditText.getText().toString()))) {
                     addressLayout.setError(presenter.getError("Not valid address"));
-                }else if(!(finalUser.setAffiliate_number(affiliateEditText.getText().toString()))){
+                } else if (!(finalUser.setAffiliate_number(affiliateEditText.getText().toString()))) {
                     affiliateEditText.setError(presenter.getError("Not valid affiliate"));
-                }else{
+                } else {
                     presenter.onClickSaveButton(finalUser);
                 }
             }
         });
-        if(!creatinguser){
+        if (!creatinguser) {
             try {
-                String temp="";
-                if(!(user.getImage().equals(temp))){
-                byte[] decodedString = Base64.decode(user.getImage(), Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                imageView_Form.setImageBitmap(decodedByte);
-                imageView_Form.setBackground(null);
+                String temp = "";
+                if (!(user.getImage().equals(temp))) {
+                    byte[] decodedString = Base64.decode(user.getImage(), Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    imageView_Form.setImageBitmap(decodedByte);
+                    imageView_Form.setBackground(null);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Error desconocido");
             }
-            int temp2=ArrayDayWeek.indexOf(user.getDayWeek());
+            int temp2 = ArrayDayWeek.indexOf(user.getDayWeek());
             dayWeek.setSelection(temp2);
             prepareFood.setChecked(user.getFood());
             dateEditText.setText(user.getDate());
@@ -466,7 +469,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
                 affiliateLayout.setError(presenter.getError("Unfilled Field"));
                 break;
             case 6:
-                Snackbar.make(constraintLayoutFormActivity, presenter.getError("User cannot be Inserted"),Snackbar.LENGTH_LONG).show();
+                Snackbar.make(constraintLayoutFormActivity, presenter.getError("User cannot be Inserted"), Snackbar.LENGTH_LONG).show();
                 affiliateLayout.setError(presenter.getError("User cannot be Inserted"));
                 break;
             case 7:
@@ -568,7 +571,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         View viewAlertDialog = layoutActivity.inflate(R.layout.alert_dialog, null);
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(myContext);
         alertDialog.setView(viewAlertDialog);
-        final EditText dialogInput = (EditText) viewAlertDialog.findViewById(R.id.dialogInput);
+        final EditText dialogInput = viewAlertDialog.findViewById(R.id.dialogInput);
         alertDialog.setCancelable(false)
                 // Botón Añadir
                 .setPositiveButton(getResources().getString(R.string.add),
@@ -680,7 +683,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     public void resetForm() {
         if (id != null) {
             affiliateEditText.setText(id);
-            BUser temp=presenter.getUser(id);
+            BUser temp = presenter.getUser(id);
             dateEditText.setText(temp.getDate());
             phoneEditText.setText(temp.getPhone());
             emailEditText.setText(temp.getEmail());

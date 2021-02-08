@@ -25,10 +25,9 @@ import com.vitalasistencia.presenters.PSearch;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 
 public class SearchActivity extends AppCompatActivity implements ISearch.View {
-    private String TAG = "Vital_Asistencia/SearchActivity";
+    private final String TAG = "V_A/SearchActivity";
 
     private ISearch.Presenter presenter;
     private Context myContext;
@@ -48,7 +47,7 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
         //Mostramos el tema a cargar
         setTheme(R.style.Theme_VitalAsistencia_Search);
         setContentView(R.layout.activity_search);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -75,7 +74,7 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
         Month = calendar.get(Calendar.MONTH);
         Day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        spinner = (Spinner) findViewById(R.id.spinner_search);
+        spinner = findViewById(R.id.spinner_search);
         ArrayList<String> dayWeek = new ArrayList<String>();
         dayWeek.addAll(presenter.getSpinner());
         dayWeek.remove("");
@@ -90,7 +89,7 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
         //Para que el usuario no pueda cambiar la fecha manualmente
         dateEditText.setEnabled(false);
 
-        buttonDate = (Button) findViewById(R.id.datePicker_Search);
+        buttonDate = findViewById(R.id.datePicker_Search);
         buttonDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
