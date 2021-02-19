@@ -146,10 +146,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
             }
         });
         // Colores del icono refresh
-        swipeRefresh.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+        swipeRefresh.setColorSchemeResources(R.color.backscreen, R.color.background);
         //Reemplazamos el textview y actualizamos la X en el String
         nUsers = findViewById(R.id.textView_User_List);
         String text = nUsers.getText().toString();

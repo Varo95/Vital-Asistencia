@@ -20,9 +20,9 @@ import java.util.ArrayList;
 public class PForm implements IForm.Presenter {
 
     String TAG = "Vital_Asistencia/PForm";
-    private IForm.View view;
+    private final IForm.View view;
     final private int CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 123;
-    private MUser MUser;
+    private final MUser MUser;
     public PForm(IForm.View view) {
         this.view = view;
         MUser = new MUser();
@@ -146,7 +146,7 @@ public class PForm implements IForm.Presenter {
     }
 
     @Override
-    public ArrayList getSpinner() {
+    public ArrayList<String> getSpinner() {
         return MUser.getSpinner();
     }
 

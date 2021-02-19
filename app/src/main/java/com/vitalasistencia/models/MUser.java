@@ -78,18 +78,20 @@ public class MUser {
 
     public boolean removeUser(String affiliate_number) {
         boolean valid = false;
-        Realm realm = Realm.getDefaultInstance();
-        try {
-            realm.beginTransaction();
-            RealmResults<BUser> result = realm.where(BUser.class).equalTo("affiliate_number", affiliate_number).findAll();
-            result.deleteAllFromRealm();
-            realm.commitTransaction();
-            realm.close();
-            valid = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            realm.close();
-            valid = false;
+        if (affiliate_number != null && !(affiliate_number.isEmpty()) && existUser(affiliate_number)) {
+            Realm realm = Realm.getDefaultInstance();
+            try {
+                realm.beginTransaction();
+                RealmResults<BUser> result = realm.where(BUser.class).equalTo("affiliate_number", affiliate_number).findAll();
+                result.deleteAllFromRealm();
+                realm.commitTransaction();
+                realm.close();
+                valid = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                realm.close();
+                valid = false;
+            }
         }
         return valid;
     }
@@ -97,15 +99,17 @@ public class MUser {
     public BUser searchUser(String affiliate_number) {
         BUser user_read = null;
         Realm realm = Realm.getDefaultInstance();
-        try {
-            realm.beginTransaction();
-            user_read = realm.copyFromRealm(realm.where(BUser.class).equalTo("affiliate_number", affiliate_number).findFirst());
-            realm.commitTransaction();
-            realm.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            realm.close();
-            user_read = null;
+        if (affiliate_number != null && !(affiliate_number.isEmpty()) && existUser(affiliate_number)) {
+            try {
+                realm.beginTransaction();
+                user_read = realm.copyFromRealm(realm.where(BUser.class).equalTo("affiliate_number", affiliate_number).findFirst());
+                realm.commitTransaction();
+                realm.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                realm.close();
+                user_read = null;
+            }
         }
         return user_read;
     }
@@ -118,7 +122,7 @@ public class MUser {
             RealmQuery<BUser> query = null;
             if (address != null || dayWeek != null || date != null) {
                 if (address != null && !address.isEmpty()) {
-                    query = realm.where(BUser.class).like("address", "*" + address + "*");
+                    query = realm.where(BUser.class).like("address", address);
                 }
                 if (dayWeek != null && !dayWeek.isEmpty()) {
                     if (query == null) {

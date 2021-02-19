@@ -13,13 +13,16 @@ public class PList implements IList.Presenter {
 
     String TAG = "Vital_Asistencia/PList";
     private IList.View view;
-    private MUser MUser;
+    private final MUser MUser;
 
     public PList(IList.View view) {
         this.view = view;
         MUser = new MUser();
     }
 
+    public PList(){
+        MUser = new MUser();
+    }
 
     @Override
     public void onClickFloatingButton() {
@@ -82,7 +85,7 @@ public class PList implements IList.Presenter {
 
     @Override
     public int getAndroidVersion() {
-        return (int) Build.VERSION.SDK_INT;
+        return Build.VERSION.SDK_INT;
     }
 
     @Override

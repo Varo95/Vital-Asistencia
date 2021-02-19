@@ -4,10 +4,16 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.vitalasistencia.models.BUser;
 import com.vitalasistencia.models.MUser;
+import com.vitalasistencia.presenters.PList;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import io.realm.Realm;
 
@@ -23,6 +29,8 @@ public class MUserTest {
     @Before
     public void setUp(){
         Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.commitTransaction();
         realm.close();
         Realm.deleteRealm(realm.getConfiguration());
         mUser = new MUser();
@@ -49,55 +57,96 @@ public class MUserTest {
         removeMe.setAffiliate_number("765HJKLI");
     }
 
-
-    public void MUser_insert_isCorrect(){
-        //Como el metodo existUser se usa dentro de este método no te he puesto el test de existUser
-        assertTrue(mUser.insertUser(test));
-        //Por lo tanto comprobamos aquí que no puede meter el mismo usuario
-        assertFalse(mUser.insertUser(test));
-        assertTrue(mUser.insertUser(test1));
-        assertFalse(mUser.insertUser(test1));
-        assertTrue(mUser.insertUser(removeMe));
-        assertFalse(mUser.insertUser(removeMe));
-    }
-
     @Test
-    public void MUser_update_isCorrect(){
+    public void MUser_isCorrect(){
+        //----------------------------------------InsertUser----------------------------------------
+        //Comprobamos el método para insertar un usuario
+        //Como el metodo existUser se usa dentro de este método no te he puesto el test de existUser
+        assertTrue(mUser.insertUser(test)); //okey
+        //Por lo tanto comprobamos aquí que no puede meter el mismo usuario
+        assertFalse(mUser.insertUser(test)); //okey
+        assertTrue(mUser.insertUser(test1)); //okey
+        assertFalse(mUser.insertUser(test1)); //okey
+        assertTrue(mUser.insertUser(removeMe)); //okey
+        assertFalse(mUser.insertUser(removeMe)); //okey
+        //----------------------------------------UpdateUser----------------------------------------
+        //Comprobamos el método para actualizar un usuario
         test.setAddress("Av Test1");
         test1.setAddress("Avenida tolai");
-        assertTrue(mUser.updateUser(test));
-        assertTrue(mUser.updateUser(test1));
+
+        assertTrue(mUser.updateUser(test)); //okey
+        assertTrue(mUser.updateUser(test1)); //okey
+        assertFalse(mUser.updateUser(null)); //okey
+
         test1.setDayWeek("Martes");
         //Al borrarlo no debería de encontrarlo, por lo tanto devolvería un false a la hora de intentar actualizar.
         mUser.removeUser(test1.getAffiliate_number());
-        assertFalse(mUser.updateUser(test1));
+
+        assertFalse(mUser.updateUser(test1)); //okey
+
+        //----------------------------------------RemoveUser----------------------------------------
+        //Comprobamos el método para eliminar un usuario
+        assertTrue(mUser.removeUser(removeMe.getAffiliate_number())); //okey
+        assertFalse(mUser.removeUser(removeMe.getAffiliate_number())); //okey
+
+        //----------------------------------------SearchUser----------------------------------------
+        //
+        assertEquals(test , mUser.searchUser("123FFFFF")); //okey
+
+        mUser.insertUser(test1);
+        mUser.insertUser(removeMe);
+
+        assertEquals(test1 ,mUser.searchUser(test1.getAffiliate_number())); //okey
+        assertEquals(removeMe, mUser.searchUser(removeMe.getAffiliate_number())); //okey
+
+        mUser.removeUser(test1.getAffiliate_number());
+        mUser.removeUser(removeMe.getAffiliate_number());
+
+        assertNull(mUser.searchUser(test1.getAffiliate_number())); //okey
+        assertNull(mUser.searchUser(removeMe.getAffiliate_number())); //okey
+
+        //----------------------------------------UsersQuery----------------------------------------
+        //Comprobamos el método para filtrar usuarios
+        List<BUser> pocholandia=mUser.UsersQuerys(null,"Martes","04/02/2021");
+
+        assertEquals(test , pocholandia.get(0)); //okey
+        assertNotEquals(test1, pocholandia.get(0)); //okey
+        assertNotEquals(removeMe, pocholandia.get(0)); //okey
+
+        mUser.insertUser(test1);
+        test1.setDayWeek("Lunes");
+        mUser.updateUser(test1);
+        List<BUser> vamoAPorEl10=mUser.UsersQuerys(null,"Lunes","04/02/2021");
+
+        assertEquals(test1, vamoAPorEl10.get(0)); //okey
+        assertNotEquals(test, vamoAPorEl10.get(0)); //okey
+
+        mUser.removeUser(test1.getAffiliate_number());
+
+        //---------------------------------------GetAllSumary---------------------------------------
+        //Comprobamos el método para listar todos los usuarios en la lista
+        assertEquals(test , mUser.getAllSumary().get(0)); //okey
+
+        mUser.insertUser(test1);
+
+        assertEquals(test1, mUser.getAllSumary().get(1)); //okey
+        assertNotEquals(test1, mUser.getAllSumary().get(0)); //okey
+        assertNotEquals(removeMe,mUser.getAllSumary().get(1)); //okey
+
+        //----------------------------------------GetSpinner----------------------------------------
+        //Comprobamos el método para recuperar los datos del spinner
+        assertEquals("Martes", mUser.getSpinner().get(0)); //okey
+        assertEquals("Lunes", mUser.getSpinner().get(1)); //okey
+        assertNotEquals("Viernes", mUser.getSpinner().get(0)); //okey
+        assertNotEquals("Sabado", mUser.getSpinner().get(1)); //okey
     }
 
-    @Test
-    public void MUser_remove_isCorrect(){
-        assertTrue(mUser.removeUser(removeMe.getAffiliate_number()));
-        assertFalse(mUser.removeUser(removeMe.getAffiliate_number()));
+    @After
+    public void reloadTenUsers(){
+        mUser.removeUser(test1.getAffiliate_number());
+        mUser.removeUser(test.getAffiliate_number());
+        mUser.removeUser(removeMe.getAffiliate_number());
+        PList a=new PList();
+        a.tenUsersForFirstTime();
     }
-
-    @Test
-    public void MUser_searchUser_isCorrect(){
-        assertEquals(test , mUser.searchUser("123FFFFF"));
-        assertEquals(null , mUser.searchUser("1"));
-    }
-
-    @Test
-    public void MUser_UsersQuerys_isCorrect(){
-        assertEquals(test , mUser.UsersQuerys("C/ Test","Martes","04/02/2021").get(0));
-    }
-
-    @Test
-    public void MUser_getAllSumary_isCorrect(){
-        assertEquals(test1 , mUser.getAllSumary().get(0));
-    }
-
-    @Test
-    public void MUser_getSpinner_isCorrect(){
-        assertEquals("", mUser.getSpinner().get(0));
-    }
-
 }
