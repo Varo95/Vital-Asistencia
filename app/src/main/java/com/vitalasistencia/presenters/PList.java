@@ -43,6 +43,12 @@ public class PList implements IList.Presenter {
     }
 
     @Override
+    public void onClickHelpButton() {
+        Log.d(TAG,"Help clicked");
+        view.startHelpActivity();
+    }
+
+    @Override
     public void onClickReciclerViewItem(String affiliate_number) {
         Log.d(TAG, "Item" + affiliate_number + "selected");
         BUser result=null;

@@ -44,6 +44,12 @@
         <item name="android:windowBackground">@color/white</item>
     </style>
 
+    <style name="Theme.VitalAsistencia.Help" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/background</item>
+        <item name="colorAccent">@color/black</item>
+        <item name="android:windowBackground">@color/backscreen</item>
+    </style>
+
     <style name="Theme.VitalAsistencia.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.VitalAsistencia.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

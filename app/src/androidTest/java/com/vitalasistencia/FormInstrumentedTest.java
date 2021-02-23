@@ -75,26 +75,6 @@ public class FormInstrumentedTest {
                         isDisplayed()));
         floatingActionButton.perform(click());
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.date_picker),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        2),
-                                2),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
-
         ViewInteraction textInputEditText = onView(
                 allOf(withId(R.id.TEI_phone),
                         childAtPosition(
@@ -104,6 +84,16 @@ public class FormInstrumentedTest {
                                 1),
                         isDisplayed()));
         textInputEditText.perform(replaceText("5556667778"), closeSoftKeyboard());
+
+        ViewInteraction textInputEditText1 = onView(
+                allOf(withId(R.id.date_search_tei),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.date_form),
+                                        0),
+                                1),
+                        isDisplayed()));
+        textInputEditText1.perform(replaceText("23/02/2021"), closeSoftKeyboard());
 
         ViewInteraction textInputEditText2 = onView(
                 allOf(withId(R.id.TEI_email),
@@ -182,14 +172,14 @@ public class FormInstrumentedTest {
                                 withId(R.id.swipeRefresh),
                                 1)));
         recyclerView.perform(actionOnItemAtPosition(0, click()));
-
+        Espresso.onView(ViewMatchers.withId(R.id.CL_FormActivity)).perform(ViewActions.swipeUp());
         ViewInteraction textView = onView(
                 allOf(withId(android.R.id.text1), withText("Lunes"), isDisplayed()));
         textView.check(matches(withText("Lunes")));
 
         ViewInteraction editText = onView(
-                allOf(withId(R.id.date_search_tei), withText("19/02/2021"), isDisplayed()));
-        editText.check(matches(withText("19/02/2021")));
+                allOf(withId(R.id.date_search_tei), withText("23/02/2021"), isDisplayed()));
+        editText.check(matches(withText("23/02/2021")));
 
         ViewInteraction editText2 = onView(
                 allOf(withId(R.id.TEI_phone), withText("5556667778"), isDisplayed()));

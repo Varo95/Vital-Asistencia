@@ -5,18 +5,20 @@ import com.vitalasistencia.models.BUser;
 import java.util.ArrayList;
 
 public interface IList {
-    public interface View {
+    interface View {
         void startFormActivity();
         void startSearchActivity();
         void startAboutActivity();
         void startFormActivity(String id);
+        void startHelpActivity();
         void deleteUser(int pos);
     }
 
-    public interface Presenter {
+    interface Presenter {
         void onClickFloatingButton();
         void onClickSearchButton();
         void onClickAboutButton();
+        void onClickHelpButton();
         void onClickReciclerViewItem(String id);
         void onClickSwipeEdit(String pos);
         void onClickSwipeDelete(int pos, BUser user);

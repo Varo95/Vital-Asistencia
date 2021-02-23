@@ -40,7 +40,7 @@
         Debe empezar por C o A</string>
     <string name="affiliate_not_valid">Numero de afiliado no valido\n
         Debe de tener 3 numeros seguidos de 5 letras mayusculas\n
-        Ejemplos: 111AAAA 123ABCD</string>
+        Ejemplos: 111AAAAA 123ABCDE</string>
     <string name="delete">Eliminar</string>
     <string name="P_write_denied">Permiso de Escritura Denegado</string>
     <string name="P_write_accepted">Permiso de Escritura Concedido</string>
@@ -60,4 +60,8 @@
     <string name="search_user_dialog_message">No has introducido ningun parametro de busqueda! Porfavor rellena algún campo</string>
     <string name="search_caceled">Busqueda cancelada</string>
     <string name="updating_user">Actualizando Usuario</string>
+    <string name="Help">Ayuda</string>
+    <string name="P_nstatus_denied">Permiso de Red Denegado</string>
+    <string name="P_nstatus_acepted">Permiso de Red Concedido</string>
+    <string name="connectionError">Error de conexión</string>
 </resources>

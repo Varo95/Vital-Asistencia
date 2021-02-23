@@ -181,6 +181,11 @@ public class MainActivity extends AppCompatActivity implements IList.View {
             presenter.onClickAboutButton();
             return true;
         }
+        if (id == R.id.action_help) {
+            Log.d(TAG, "Menu About click");
+            presenter.onClickHelpButton();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -250,8 +255,6 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "Starting Activity from Search");
         super.onActivityResult(requestCode, resultCode, data);
-        // Comprobamos si el resultado de la segunda actividad es "RESULT_OK".
-        String temp = "";
         int sizeOnResume = items.size();
         items.clear();
         ArrayList<BUser> searched = new ArrayList<BUser>();
@@ -283,6 +286,13 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     public void startAboutActivity() {
         Log.d(TAG, "Starting About Activity");
         Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+        startActivity(intent);
+    }
+    @Override
+    public void startHelpActivity() {
+        Log.d(TAG, "Starting Help Activity");
+        Intent intent = new Intent(MainActivity.this, HelpActivity.class);
+        intent.putExtra("activity","list");
         startActivity(intent);
     }
 

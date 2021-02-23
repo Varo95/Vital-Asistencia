@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vitalasistencia">
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".views.MyApp"
@@ -12,10 +15,11 @@
         android:roundIcon="@mipmap/vital_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".views.HelpActivity"></activity>
         <activity
             android:name=".views.AboutActivity"
             android:label="@string/title_activity_about"
-            android:theme="@style/Theme.VitalAsistencia.About"/>
+            android:theme="@style/Theme.VitalAsistencia.About" />
         <activity
             android:name=".views.SearchActivity"
             android:label="@string/title_activity_search"
@@ -27,7 +31,8 @@
         <activity
             android:name=".views.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.VitalAsistencia.List" android:windowSoftInputMode="adjustPan">
+            android:theme="@style/Theme.VitalAsistencia.List"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

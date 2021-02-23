@@ -45,7 +45,7 @@
         May Start with C or A</string>
     <string name="affiliate_not_valid">Not valid Affiliate Number\n
         Must be 3 numbers followed by 5 Caps characters\n
-        Examples: 111AAAA 123ABCD</string>
+        Examples: 111AAAAA 123ABCDE</string>
     <string name="delete">Delete</string>
     <string name="deleted_user">Deleting User:</string>
     <string name="P_write_denied">Write Permission Denied</string>
@@ -65,5 +65,9 @@
     <string name="search_user_dialog_message">You have not entered any search parameters! Please refill at least once</string>
     <string name="search_caceled">Searched was canceled</string>
     <string name="updating_user">Updating user</string>
+    <string name="Help">Help</string>
+    <string name="P_nstatus_denied">Network Status Permission Denied</string>
+    <string name="P_nstatus_acepted">Network Status Permission Granted</string>
+    <string name="connectionError">Connection Error</string>
 
 </resources>
