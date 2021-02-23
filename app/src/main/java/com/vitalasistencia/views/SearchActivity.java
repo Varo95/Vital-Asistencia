@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -130,6 +131,16 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
         getMenuInflater().inflate(R.menu.menu_search, menu);
         return true;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_help) {
+            Log.d(TAG, "Menu About click");
+            presenter.onClickHelpButton();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public boolean onNavigateUp() {
@@ -171,6 +182,14 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
     protected void onDestroy() {
         Log.d(TAG, "Starting onDestroy");
         super.onDestroy();
+    }
+
+    @Override
+    public void startHelpActivity() {
+        Log.d(TAG, "Starting Help Activity");
+        Intent intent = new Intent(SearchActivity.this, HelpActivity.class);
+        intent.putExtra("activity","search");
+        startActivity(intent);
     }
 
     @Override

@@ -64,4 +64,5 @@
     <string name="P_nstatus_denied">Permiso de Red Denegado</string>
     <string name="P_nstatus_acepted">Permiso de Red Concedido</string>
     <string name="connectionError">Error de conexión</string>
+    <string name="List">Listado</string>
 </resources>

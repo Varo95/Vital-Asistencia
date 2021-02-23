@@ -69,5 +69,6 @@
     <string name="P_nstatus_denied">Network Status Permission Denied</string>
     <string name="P_nstatus_acepted">Network Status Permission Granted</string>
     <string name="connectionError">Connection Error</string>
+    <string name="List">List</string>
 
 </resources>

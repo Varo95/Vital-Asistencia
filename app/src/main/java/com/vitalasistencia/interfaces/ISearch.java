@@ -3,13 +3,15 @@ package com.vitalasistencia.interfaces;
 import java.util.ArrayList;
 
 public interface ISearch {
-    public interface Presenter {
+    interface Presenter {
         void onClickSearchButton();
         ArrayList getSpinner();
+        void onClickHelpButton();
     }
 
-    public interface View {
+    interface View {
         void SearchButton();
         void showMessageSearch();
+        void startHelpActivity();
     }
 }

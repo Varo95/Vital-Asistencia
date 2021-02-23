@@ -122,7 +122,7 @@ public class MUser {
             RealmQuery<BUser> query = null;
             if (address != null || dayWeek != null || date != null) {
                 if (address != null && !address.isEmpty()) {
-                    query = realm.where(BUser.class).like("address", address);
+                    query = realm.where(BUser.class).like("address", "*"+address+"*");
                 }
                 if (dayWeek != null && !dayWeek.isEmpty()) {
                     if (query == null) {

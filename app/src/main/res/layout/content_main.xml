@@ -14,7 +14,6 @@
         android:background="#757575"
         android:text="@string/User_List"
         android:textAlignment="center"
-        app:layout_anchor="@+id/include"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -155,4 +155,10 @@ public class PForm implements IForm.Presenter {
         return MUser.searchUser(id);
     }
 
+    @Override
+    public void onClickHelpButton() {
+        Log.d(TAG,"Help clicked");
+        view.startHelpActivity();
+    }
+
 }

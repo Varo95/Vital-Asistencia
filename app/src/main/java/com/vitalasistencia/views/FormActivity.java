@@ -506,7 +506,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
 
         if (id == R.id.action_delete) {
             Log.d(TAG, "Menu Delete click");
-            //presenter.();
+            presenter.onClickCancelButton();
             return true;
         }
         if (id == R.id.action_reset) {
@@ -516,7 +516,7 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
         }
         if (id == R.id.action_help) {
             Log.d(TAG, "Menu Help click");
-            //presenter.();
+            presenter.onClickHelpButton();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -561,6 +561,13 @@ public class FormActivity extends AppCompatActivity implements IForm.View {
     public void endActivity() {
         Log.d(TAG, "Starting SaveButton");
         finish();
+    }
+    @Override
+    public void startHelpActivity() {
+        Log.d(TAG, "Starting Help Activity");
+        Intent intent = new Intent(FormActivity.this, HelpActivity.class);
+        intent.putExtra("activity","form");
+        startActivity(intent);
     }
 
     @Override

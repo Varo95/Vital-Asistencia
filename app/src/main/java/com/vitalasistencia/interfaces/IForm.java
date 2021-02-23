@@ -7,7 +7,7 @@ import com.vitalasistencia.models.BUser;
 import java.util.ArrayList;
 
 public interface IForm {
-    public interface Presenter {
+    interface Presenter {
         void onClickSaveButton(BUser user);
         String getError(String error_code);
         void onClickAddSpinner();
@@ -20,9 +20,10 @@ public interface IForm {
         void onClickResetForm();
         ArrayList getSpinner();
         BUser getUser(String id);
+        void onClickHelpButton();
     }
 
-    public interface View {
+    interface View {
         void endActivity();
         void onClickAddSpinner();
         void deleteUser();
@@ -31,5 +32,6 @@ public interface IForm {
         void resetImage();
         void resetForm();
         void showMessageForm(int code);
+        void startHelpActivity();
     }
 }

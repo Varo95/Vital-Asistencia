@@ -29,8 +29,6 @@ public class HelpActivity extends AppCompatActivity implements IHelp.View {
     private Context myContext;
     private String fromActivity;
     private WebView mWebview;
-    private ConstraintLayout constraintLayoutHelpActivity;
-    final private int CODE_ACCESS_NETWORK_STATE = 123;
 
     String TAG = "Vital_Asistencia/HelpActivity";
 
@@ -42,7 +40,6 @@ public class HelpActivity extends AppCompatActivity implements IHelp.View {
         setContentView(R.layout.activity_help);
         myContext = this;
         presenter = new PHelp(this);
-        constraintLayoutHelpActivity = findViewById(R.id.CL_HelpActivity);
         Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -60,7 +57,6 @@ public class HelpActivity extends AppCompatActivity implements IHelp.View {
             Log.d(TAG, "Error loading toolbar");
         }
         fromActivity = getIntent().getStringExtra("activity");
-
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         mWebview = findViewById(R.id.webview_help);
@@ -83,17 +79,21 @@ public class HelpActivity extends AppCompatActivity implements IHelp.View {
             if (fromActivity != null) {
                 switch (fromActivity){
                     case "list":
-                        mWebview.loadUrl("https://amd031.github.io/ayudaAniCrud/ayudas/ayudalistado.html");
+                        getSupportActionBar().setTitle(getResources().getString(R.string.Help)+" "+getResources().getString(R.string.List));
+                        mWebview.loadUrl("https://varo95.github.io/Vital-Asistencia/activity/list.html");
                         break;
                     case "search":
-                        mWebview.loadUrl("https://amd031.github.io/ayudaAniCrud/ayudas/ayudabuscar.html");
+                        getSupportActionBar().setTitle(getResources().getString(R.string.Help)+" "+getResources().getString(R.string.title_activity_search));
+                        mWebview.loadUrl("https://varo95.github.io/Vital-Asistencia/activity/search.html");
                         break;
                     case "form":
-                        mWebview.loadUrl("https://amd031.github.io/ayudaAniCrud/ayudas/ayudaformulario.html");
+                        getSupportActionBar().setTitle(getResources().getString(R.string.Help)+" "+getResources().getString(R.string.title_activity_form));
+                        mWebview.loadUrl("https://varo95.github.io/Vital-Asistencia/activity/form.html");
                         break;
                 }
             } else {
-                mWebview.loadUrl("https://amd031.github.io/ayudaAniCrud/ayudas/ayudaformulario.html");
+                getSupportActionBar().setTitle(R.string.Help);
+                mWebview.loadUrl("https://varo95.github.io/Vital-Asistencia/index.html");
             }
         }else{
             presenter.connectionError();
