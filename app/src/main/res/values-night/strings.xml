@@ -8,7 +8,7 @@
     <string name="title_activity_splash_screen" translatable="false">FullscreenActivity</string>
     <string name="dummy_button" translatable="false">Dummy Button</string>
     <string name="dummy_content" translatable="false">DUMMY\nCONTENT</string>
-    <string name="title_activity_form" translatable="false">FormActivity</string>
+    <string name="title_activity_form">Form</string>
     <string name="food">Prepare food?</string>
     <string name="date_format">dd/mm/yy</string>
     <string name="date">Date</string>

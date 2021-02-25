@@ -65,4 +65,6 @@
     <string name="P_nstatus_acepted">Permiso de Red Concedido</string>
     <string name="connectionError">Error de conexión</string>
     <string name="List">Listado</string>
+    <string name="connectionError_message">Verifique su conexión a Internet y luego intente volver a esta pantalla. Quizás no tengas acceso a internet</string>
+    <string name="title_activity_form" translatable="false">Formulario</string>
 </resources>

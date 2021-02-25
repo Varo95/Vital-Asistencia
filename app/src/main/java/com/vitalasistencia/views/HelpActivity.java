@@ -5,7 +5,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -22,6 +24,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.vitalasistencia.R;
 import com.vitalasistencia.interfaces.IHelp;
 import com.vitalasistencia.presenters.PHelp;
+
+import java.util.Locale;
 
 public class HelpActivity extends AppCompatActivity implements IHelp.View {
 
@@ -60,6 +64,9 @@ public class HelpActivity extends AppCompatActivity implements IHelp.View {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         mWebview = findViewById(R.id.webview_help);
+        //Este string almacenará el idioma que está usando el usuario en este momento para mostrarle
+        //la ayuda en función de su idioma
+        String lang=Locale.getDefault().getDisplayLanguage();
 
         if (networkInfo != null && networkInfo.isConnected()) {
             mWebview.getSettings().setJavaScriptEnabled(true);
@@ -80,20 +87,36 @@ public class HelpActivity extends AppCompatActivity implements IHelp.View {
                 switch (fromActivity){
                     case "list":
                         getSupportActionBar().setTitle(getResources().getString(R.string.Help)+" "+getResources().getString(R.string.List));
-                        mWebview.loadUrl("https://varo95.github.io/Vital-Asistencia/activity/list.html");
+                        if(lang.equals("español")){
+                            mWebview.loadUrl("https://varo95.github.io/Vital-Asistencia/activity/list.html");
+                        }else{
+                            mWebview.loadUrl("https://varo95.github.io/Vital-Asistencia/activity/listen.html");
+                        }
                         break;
                     case "search":
                         getSupportActionBar().setTitle(getResources().getString(R.string.Help)+" "+getResources().getString(R.string.title_activity_search));
-                        mWebview.loadUrl("https://varo95.github.io/Vital-Asistencia/activity/search.html");
+                        if(lang.equals("español")){
+                            mWebview.loadUrl("https://varo95.github.io/Vital-Asistencia/activity/search.html");
+                        }else{
+                            mWebview.loadUrl("https://varo95.github.io/Vital-Asistencia/activity/searchen.html");
+                        }
                         break;
                     case "form":
                         getSupportActionBar().setTitle(getResources().getString(R.string.Help)+" "+getResources().getString(R.string.title_activity_form));
-                        mWebview.loadUrl("https://varo95.github.io/Vital-Asistencia/activity/form.html");
+                        if(lang.equals("español")){
+                            mWebview.loadUrl("https://varo95.github.io/Vital-Asistencia/activity/form.html");
+                        }else{
+                            mWebview.loadUrl("https://varo95.github.io/Vital-Asistencia/activity/formen.html");
+                        }
                         break;
                 }
             } else {
                 getSupportActionBar().setTitle(R.string.Help);
-                mWebview.loadUrl("https://varo95.github.io/Vital-Asistencia/index.html");
+                if(lang.equals("español")){
+                    mWebview.loadUrl("https://varo95.github.io/Vital-Asistencia/activity/index.html");
+                }else{
+                    mWebview.loadUrl("https://varo95.github.io/Vital-Asistencia/activity/indexen.html");
+                }
             }
         }else{
             presenter.connectionError();
@@ -138,6 +161,18 @@ public class HelpActivity extends AppCompatActivity implements IHelp.View {
 
     @Override
     public void showConnectionError(){
-        Toast.makeText(getApplicationContext(), getResources().getString(R.string.connectionError), Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
+        builder.setTitle(R.string.connectionError);
+        builder.setMessage(R.string.connectionError_message);
+
+        //Accept Button
+        builder.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
